@@ -1,0 +1,15 @@
+# bytecode-compiled
+__pycache__/
+
+# enviroment
+.venv
+
+# pycharm
+.idea
+
+# "cache" folders
+collect/
+people/
+thesau/
+pointer/
+
