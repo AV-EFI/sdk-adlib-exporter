@@ -66,7 +66,7 @@ class WorkBuilder(BaseBuilder):
                         # sometimes a source is provided but the term_number field is just empty e.g. 8072.xml
                         continue
                     term_number = term_number_list[0]
-                    if "gnd" in term_number:
+                    if "http://d-nb.info/gnd/" in term_number:
                         same_as.append(
                             efi.GNDResource(
                                 id=term_number.split("/")[-1],
@@ -84,9 +84,11 @@ class WorkBuilder(BaseBuilder):
 
     @property
     def has_subject(self):
+        # Agent (Person) handling
         xml_content_persons = self.xml.xpath("Content_person")
 
         persons = []
+
         try:
             for xml_content_person in xml_content_persons:
 
@@ -114,9 +116,25 @@ class WorkBuilder(BaseBuilder):
                         # sometimes a source is provided but the source_number field is just empty e.g. 8072.xml
                         continue
                     source_number = source_number_list[0]
-                    if "gnd" in source_number:
+
+                    if "http://d-nb.info/gnd/" in source_number:
                         same_as.append(
                             efi.GNDResource(
+                                id=source_number.split("/")[-1],
+                            )
+                        )
+
+                    if "https://www.filmportal.de/person/" in source_number:
+                        same_as.append(
+                            efi.FilmportalResource(
+                                id=source_number.split("_")[-1],
+                            )
+                        )
+
+                    # does not occur
+                    if "http://vocab.getty.edu/page/tgn/" in source_number:
+                        same_as.append(
+                            efi.TGNResource(
                                 id=source_number.split("/")[-1],
                             )
                         )
@@ -133,8 +151,12 @@ class WorkBuilder(BaseBuilder):
         except Exception as e:
             raise Exception("Problem with Content_Subjects (Persons):", e)
 
+        # Subject and GeographicName handling
+
         xml_content_subjects = self.xml.xpath("Content_subject")
+
         subjects = []
+        geographic_names = []
 
         try:
             for xml_content_subject in xml_content_subjects:
@@ -155,30 +177,46 @@ class WorkBuilder(BaseBuilder):
                 same_as = []
 
                 for source_xml in sources_xml:
-                    # Note how is it called source.number instead of term.number like in content_genre!
                     source_number_list = source_xml.xpath("term.number/text()")
                     if not source_number_list:
                         # sometimes a source is provided but the source_number field is just empty e.g. 8072.xml
                         continue
                     source_number = source_number_list[0]
-                    if "gnd" in source_number:
+
+                    if "http://d-nb.info/gnd/" in source_number:
                         same_as.append(
                             efi.GNDResource(
                                 id=source_number.split("/")[-1],
                             )
                         )
 
+                    if "http://vocab.getty.edu/page/tgn/" in source_number:
+                        same_as.append(
+                            efi.TGNResource(
+                                id=source_number.split("/")[-1],
+                            )
+                        )
+
+                    # does not occur
+                    if "https://www.filmportal.de/person/" in source_number:
+                        same_as.append(
+                            efi.FilmportalResource(
+                                id=source_number.split("_")[-1],
+                            )
+                        )
+
                 # decide if geographic oder subject
                 term_types = subject_xml.xpath("term.type/value[@lang='3']/text()")
 
-                if "Geograf. Schlagwort" in term_types:
-                    subjects.append(
+                if "Ort" in term_types:
+                    geographic_names.append(
                         efi.GeographicName(
                             has_name=subject_name,
                             same_as=same_as,
                         )
                     )
-                else:
+
+                if "Ort" not in term_types:
                     subjects.append(
                         efi.Subject(
                             has_name=subject_name,
@@ -191,7 +229,7 @@ class WorkBuilder(BaseBuilder):
                 "Problem with Content_Subject (Subject, GeographicName):", e
             )
 
-        return persons + subjects
+        return persons + subjects + geographic_names
 
     @property
     def is_part_of(self):
@@ -230,6 +268,7 @@ class WorkBuilder(BaseBuilder):
 
     @property
     def has_event(self):
+        # Currently only production event
 
         # activity handling
 
@@ -346,17 +385,25 @@ class WorkBuilder(BaseBuilder):
         production_date_start = self.xml.xpath(
             "Production_date/production.date.start/text()"
         )
+        production_date_start_prec = self.xml.xpath(
+            "Production_date/production.date.start.prec/value[@lang='3'][text()='circa']/text()"
+        )
         production_date_end = self.xml.xpath(
             "Production_date/production.date.end/text()"
+        )
+        production_date_end_prec = self.xml.xpath(
+            "Production_date/production.date.end.prec/value[@lang='3'][text()='circa']/text()"
         )
 
         has_date = None
 
         if production_date_start and production_date_end:
+            production_date_start_value = production_date_start[0] + ("~" if production_date_start_prec else "")
+            production_date_end_value = production_date_end[0] + ("~" if production_date_end_prec else "")
             has_date = (
-                production_date_start[0]
-                if production_date_start[0] == production_date_end[0]
-                else f"{production_date_start[0]}/{production_date_end[0]}"
+                production_date_start_value
+                if production_date_start_value == production_date_end_value
+                else f"{production_date_start_value}/{production_date_end_value}"
             )
 
         # location handling
