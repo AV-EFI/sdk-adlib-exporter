@@ -2,9 +2,9 @@ import os
 import tempfile
 from linkml_runtime.dumpers import JSONDumper
 from adlib import collect_provider, pointer_file_provider
-from builder.item_builder import ItemBuilder
-from builder.manifestation_builder import ManifestationBuilder
-from builder.work_builder import WorkBuilder
+from builder.item.item_builder import ItemBuilder
+from builder.manifestation.manifestation_builder import ManifestationBuilder
+from builder.work.work_builder import WorkBuilder
 
 
 class RecordCategory:
@@ -12,20 +12,19 @@ class RecordCategory:
     A class to manage records of a specific type (e.g., works, manifestations, items).
 
     Attributes:
-        priref (int): The identifier used to fetch initial XML data via pointer file.
         builder (class): The builder class used to process the XML data into structured records.
         initial_prirefs (list): A list of prirefs retrieved from the pointer file.
         final_prirefs (list): A list of processed record prirefs after record building.
         records (list): A list to store the processed records.
     """
 
-    def __init__(self, priref, builder):
+    def __init__(self, priref, builder, name):
         xml = pointer_file_provider.get_by_priref(priref)
         self.initial_prirefs = xml.xpath("hit/text()")
-
         self.builder = builder
         self.final_prirefs = []
         self.records = []
+        self.name = name
 
 
 def main():
@@ -33,16 +32,30 @@ def main():
     Main entry point to process works, manifestations, and items into records,
     and then write them to a JSON file.
     """
-    works = RecordCategory(priref=462, builder=WorkBuilder)
-    manifestations = RecordCategory(priref=468, builder=ManifestationBuilder)
-    items = RecordCategory(priref=469, builder=ItemBuilder)
+    works = RecordCategory(
+        priref=462,
+        builder=WorkBuilder,
+        name="work",
+    )
+    manifestations = RecordCategory(
+        priref=468,
+        builder=ManifestationBuilder,
+        name="manifestation",
+    )
+    items = RecordCategory(
+        priref=469,
+        builder=ItemBuilder,
+        name="item",
+    )
 
     print(
-        f"Retrieved {len(works.initial_prirefs + manifestations.initial_prirefs + items.initial_prirefs)} prirefs:",
-        f"\n1. {len(works.initial_prirefs)} (works)",
-        f"\n2. {len(manifestations.initial_prirefs)} (manifestations)",
-        f"\n3. {len(items.initial_prirefs)} (items)",
+        f"# Retrieved {len(works.initial_prirefs + manifestations.initial_prirefs + items.initial_prirefs)} prirefs:"
     )
+
+    for i, record_category in enumerate([works, manifestations, items]):
+        print(
+            f"{i+1}. {len(record_category.initial_prirefs)} ({record_category.name}s)"
+        )
 
     # Process each record category and its allowed parent records.
     for i, (record_category, allowed_parents) in enumerate(
@@ -52,7 +65,7 @@ def main():
             (items, manifestations.final_prirefs),
         ]
     ):
-        print("Handling category", i + 1)
+        print(f"# Handling {record_category.name}s")
         process_records(
             record_category=record_category,
             allowed_parents=allowed_parents,
@@ -60,7 +73,7 @@ def main():
 
     records = works.records + manifestations.records + items.records
 
-    print(f"Built {len(records)} records")
+    print(f"# Built {len(records)} records")
 
     # Create a temporary file for the JSON output.
     file_obj, json_file = tempfile.mkstemp(suffix=".json")
@@ -84,16 +97,22 @@ def process_records(record_category, allowed_parents):
     # Loop over each priref in the current record category.
     for i, priref in enumerate(record_category.initial_prirefs):
         print(
-            "Handling record",
-            f"{i+1}/{len(record_category.initial_prirefs)}",
-            "of this category with priref",
-            priref,
+            f"Handling {record_category.name} {i+1}/{len(record_category.initial_prirefs)} with priref {priref}"
         )
         try:
             # Fetch the XML data from the collect_provider using the priref.
             xml = collect_provider.get_by_priref(priref)
+
+            # print(type(xml))
             # Build the record using the associated builder.
             record = record_category.builder(xml, allowed_parents).build()
+
+            # record_json = JSONDumper().dumps(record)
+            #
+            # print(record_json)
+            #
+            # pid = get_pid(json.loads(record_json))
+            # print(pid)
 
             # Store the built record and its priref.
             record_category.records.append(record)
