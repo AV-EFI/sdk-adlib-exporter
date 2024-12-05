@@ -1,11 +1,7 @@
 from builder.base.base_builder import BaseBuilder
 from avefi_schema import model as efi
-from builder.item.helper.compute_has_primary_title import compute_has_primary_title
-from builder.item.helper.compute_has_webresource import compute_has_webresource
-from builder.item.helper.compute_is_item_of import compute_is_item_of
-from builder.base.helper.compute_has_identifier import compute_has_identifier
-from builder.base.helper.compute_described_by import compute_described_by
-from builder.base.helper.compute_in_language import compute_in_language
+from builder.item.helper import *
+from builder.base.helper import *
 
 
 class ItemBuilder(BaseBuilder):
