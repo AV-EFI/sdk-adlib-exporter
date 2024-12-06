@@ -105,7 +105,7 @@ def process_records(record_category, allowed_parents):
 
             # print(type(xml))
             # Build the record using the associated builder.
-            record = record_category.builder(xml, allowed_parents).build()
+            record = record_category.builder(xml, allowed_parents, priref).build()
 
             # record_json = JSONDumper().dumps(record)
             #
