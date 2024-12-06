@@ -8,7 +8,7 @@ class ItemBuilder(BaseBuilder):
 
     def build(self):
         return efi.Item(
-            element_type=None,
+            element_type=compute_element_type(self),
             has_access_status=None,
             is_copy_of=None,
             is_derivative_of=None,

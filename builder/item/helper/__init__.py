@@ -3,6 +3,7 @@ import inspect
 from builder.item.helper.compute_is_item_of import compute_is_item_of
 from builder.item.helper.compute_has_primary_title import compute_has_primary_title
 from builder.item.helper.compute_has_webresource import compute_has_webresource
+from builder.item.helper.compute_element_type import compute_element_type
 
 
 __all__ = [
