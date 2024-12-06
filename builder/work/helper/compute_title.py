@@ -1,6 +1,5 @@
 from avefi_schema import model as efi
-
-from builder.base.mappings.adlib_to_avefi_mappings import title_type_enum_mapping
+from mappings import title_type_enum_mapping
 
 
 def compute_has_alternative_title(self):

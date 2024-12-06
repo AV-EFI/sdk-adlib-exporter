@@ -1,4 +1,4 @@
-from builder.base.mappings.adlib_to_avefi_mappings import work_form_enum_mapping
+from mappings import work_form_enum_mapping
 
 
 def compute_has_form(self):

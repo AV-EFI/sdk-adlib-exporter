@@ -1,8 +1,5 @@
 from avefi_schema import model as efi
-from builder.base.mappings.adlib_to_avefi_mappings import (
-    language_code_enum_mapping,
-    language_usage_enum_mapping,
-)
+from mappings import language_usage_enum_mapping, language_code_enum_mapping
 
 
 def compute_in_language(self):

@@ -1,0 +1,36 @@
+from avefi_schema import model as efi
+
+
+language_code_enum_mapping = {
+    "deutsch": efi.LanguageCodeEnum.deu,
+    "japanisch": efi.LanguageCodeEnum.jpn,
+    "englisch": efi.LanguageCodeEnum.eng,
+    "rumänisch": efi.LanguageCodeEnum.rum,
+    "französisch": efi.LanguageCodeEnum.fra,
+    "tschechisch": efi.LanguageCodeEnum.cze,
+    "italienisch": efi.LanguageCodeEnum.ita,
+    "niederländisch": efi.LanguageCodeEnum.dut,
+    "schwedisch": efi.LanguageCodeEnum.swe,
+    "koreanisch": efi.LanguageCodeEnum.kor,
+    "griechisch": efi.LanguageCodeEnum.grc,
+    "russisch": efi.LanguageCodeEnum.rus,
+    "spanisch": efi.LanguageCodeEnum.spa,
+    "persisch": efi.LanguageCodeEnum.fas,
+    "türkisch": efi.LanguageCodeEnum.tur,
+    "portugiesisch": efi.LanguageCodeEnum.por,
+    "norwegisch": efi.LanguageCodeEnum.nor,
+    "hebräisch": efi.LanguageCodeEnum.heb,
+    "romani": efi.LanguageCodeEnum.rom,
+    "arabisch": efi.LanguageCodeEnum.ara,
+    "ungarisch": efi.LanguageCodeEnum.hun,
+    "chinesisch": efi.LanguageCodeEnum.chi,
+    "litauisch": efi.LanguageCodeEnum.lit,
+    "schweizerdeutsch": efi.LanguageCodeEnum.gsw,
+    "bulgarisch": efi.LanguageCodeEnum.bul,
+    "polnisch": efi.LanguageCodeEnum.pol,
+    # NOT CORRECT ONLY TO PASS # NOT CORRECT ONLY TO PASS #
+    "serbokroatisch": True,
+    "belgisches Niederländisch": True,
+    "hochchinesisch": True,
+    "Original": True,
+}
