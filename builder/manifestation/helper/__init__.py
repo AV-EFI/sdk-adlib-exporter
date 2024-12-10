@@ -5,6 +5,7 @@ from builder.manifestation.helper.compute_has_primary_title import (
 from builder.manifestation.helper.compute_is_manifestation_of import (
     compute_is_manifestation_of,
 )
+from builder.manifestation.helper.compute_has_duration import compute_has_duration
 
 __all__ = [
     name for name, obj in globals().items() if callable(obj) and inspect.isfunction(obj)

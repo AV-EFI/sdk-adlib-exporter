@@ -12,7 +12,7 @@ class ManifestationBuilder(BaseBuilder):
             has_sound_type=None,
             is_manifestation_of=compute_is_manifestation_of(self),
             same_as=None,
-            has_duration=None,
+            has_duration=compute_has_duration(self),
             has_extent=None,
             has_format=None,
             has_note=None,
