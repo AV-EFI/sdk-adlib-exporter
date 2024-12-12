@@ -5,6 +5,14 @@ from adlib import collect_provider, pointer_file_provider
 from builder.item.item_builder import ItemBuilder
 from builder.manifestation.manifestation_builder import ManifestationBuilder
 from builder.work.work_builder import WorkBuilder
+import logging
+
+logging.basicConfig(
+    filename="errors.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(message)s",
+    filemode="w",
+)
 
 
 class RecordCategory:
