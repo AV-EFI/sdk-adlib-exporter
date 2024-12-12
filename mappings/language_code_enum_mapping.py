@@ -1,6 +1,5 @@
 from avefi_schema import model as efi
 
-
 language_code_enum_mapping = {
     "deutsch": efi.LanguageCodeEnum.deu,
     "japanisch": efi.LanguageCodeEnum.jpn,
