@@ -7,6 +7,7 @@ from builder.manifestation.helper.compute_is_manifestation_of import (
 )
 from builder.manifestation.helper.compute_has_duration import compute_has_duration
 from builder.manifestation.helper.compute_has_colour_type import compute_has_colour_type
+from builder.manifestation.helper.compute_has_sound_type import compute_has_sound_type
 
 __all__ = [
     name for name, obj in globals().items() if callable(obj) and inspect.isfunction(obj)

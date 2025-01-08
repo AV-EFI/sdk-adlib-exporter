@@ -9,7 +9,7 @@ class ManifestationBuilder(BaseBuilder):
         return efi.Manifestation(
             has_colour_type=compute_has_colour_type(self),
             has_item=None,
-            has_sound_type=None,
+            has_sound_type=compute_has_sound_type(self),
             is_manifestation_of=compute_is_manifestation_of(self),
             same_as=None,
             has_duration=compute_has_duration(self),
