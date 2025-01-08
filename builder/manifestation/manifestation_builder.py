@@ -7,7 +7,7 @@ from builder.base.helper import *
 class ManifestationBuilder(BaseBuilder):
     def build(self):
         return efi.Manifestation(
-            has_colour_type=None,
+            has_colour_type=compute_has_colour_type(self),
             has_item=None,
             has_sound_type=None,
             is_manifestation_of=compute_is_manifestation_of(self),
