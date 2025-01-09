@@ -11,7 +11,7 @@ language_usage_enum_mapping = {
     "Credits": efi.LanguageUsageEnum.ClosingCredits,
     "Audiodeskription für Blinde": efi.LanguageUsageEnum.AudioDescription,
     "Ohne Dialog": efi.LanguageUsageEnum.NoDialogue,
-    # NOT CORRECT ONLY TO PASS # NOT CORRECT ONLY TO PASS #
-    "OF": True,
-    "OmU": True,
+    # Covered keys without mapping! Please provide mapping! #
+    "OF": None,
+    "OmU": None,
 }

@@ -13,7 +13,7 @@ class ItemBuilder(BaseBuilder):
             is_copy_of=None,
             is_derivative_of=None,
             is_item_of=compute_is_item_of(self),
-            has_duration=None,
+            has_duration=compute_has_duration(self),
             has_extent=None,
             has_format=None,
             has_note=None,

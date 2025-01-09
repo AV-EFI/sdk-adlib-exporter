@@ -7,16 +7,16 @@ title_type_enum_mapping = {
     "Archivtitel": efi.TitleTypeEnum.SuppliedDevisedTitle,
     "Titelübersetzung": efi.TitleTypeEnum.TranslatedTitle,
     "Arbeitstitel": efi.TitleTypeEnum.WorkingTitle,
-    # NOT CORRECT ONLY TO PASS # NOT CORRECT ONLY TO PASS #
-    "Materialtitel": efi.TitleTypeEnum.AlternativeTitle,  # NOT CORRECT
-    "Verleihtitel": efi.TitleTypeEnum.AlternativeTitle,  # NOT CORRECT
-    "Schreibvariante": efi.TitleTypeEnum.AlternativeTitle,  # NOT CORRECT
-    "Untertitel": efi.TitleTypeEnum.AlternativeTitle,  # NOT CORRECT
-    "Displaytitel": efi.TitleTypeEnum.AlternativeTitle,  # NOT CORRECT
-    "Reihentitel": efi.TitleTypeEnum.AlternativeTitle,  # NOT CORRECT
-    "Abschnittstitel": efi.TitleTypeEnum.AlternativeTitle,  # NOT CORRECT
-    "Fernsehtitel": efi.TitleTypeEnum.AlternativeTitle,  # NOT CORRECT
-    "Serientitel": efi.TitleTypeEnum.AlternativeTitle,  # NOT CORRECT
-    "Festivaltitel": efi.TitleTypeEnum.AlternativeTitle,  # NOT CORRECT
-    "Episodentitel": efi.TitleTypeEnum.AlternativeTitle,  # NOT CORRECT
+    # Covered keys without mapping! Please provide mapping! #
+    "Materialtitel": None,
+    "Verleihtitel": None,
+    "Schreibvariante": None,
+    "Untertitel": None,
+    "Displaytitel": None,
+    "Reihentitel": None,
+    "Abschnittstitel": None,
+    "Fernsehtitel": None,
+    "Serientitel": None,
+    "Festivaltitel": None,
+    "Episodentitel": None,
 }

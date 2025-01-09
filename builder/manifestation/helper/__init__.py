@@ -5,7 +5,6 @@ from builder.manifestation.helper.compute_has_primary_title import (
 from builder.manifestation.helper.compute_is_manifestation_of import (
     compute_is_manifestation_of,
 )
-from builder.manifestation.helper.compute_has_duration import compute_has_duration
 from builder.manifestation.helper.compute_has_colour_type import compute_has_colour_type
 from builder.manifestation.helper.compute_has_sound_type import compute_has_sound_type
 from builder.manifestation.helper.compute_has_note import compute_has_note

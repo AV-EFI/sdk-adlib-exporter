@@ -27,9 +27,9 @@ language_code_enum_mapping = {
     "schweizerdeutsch": efi.LanguageCodeEnum.gsw,
     "bulgarisch": efi.LanguageCodeEnum.bul,
     "polnisch": efi.LanguageCodeEnum.pol,
-    # NOT CORRECT ONLY TO PASS # NOT CORRECT ONLY TO PASS #
-    "serbokroatisch": True,
-    "belgisches Niederländisch": True,
-    "hochchinesisch": True,
-    "Original": True,
+    # Covered keys without mapping! Please provide mapping! #
+    "serbokroatisch": None,
+    "belgisches Niederländisch": None,
+    "hochchinesisch": None,
+    "Original": None,
 }

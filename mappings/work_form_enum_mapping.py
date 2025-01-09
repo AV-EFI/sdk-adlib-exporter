@@ -15,12 +15,12 @@ work_form_enum_mapping = {
     "Industrie-/Wirtschaftsfilm": efi.WorkFormEnum.IndustrialFilm,
     "Musikvideo": efi.WorkFormEnum.MusicVideo,
     "Wochenschau": efi.WorkFormEnum.Newsreel,
-    # NOT CORRECT ONLY TO PASS # NOT CORRECT ONLY TO PASS #
-    "Dokumentarfilm": efi.WorkFormEnum.AmateurFilm,
-    "Dokumentarfilm mit Spielhandlung": efi.WorkFormEnum.AmateurFilm,
-    "Dokumentation": efi.WorkFormEnum.AmateurFilm,
-    "Animation": efi.WorkFormEnum.AmateurFilm,
-    "Reportage": efi.WorkFormEnum.AmateurFilm,
-    "Musiksendung": efi.WorkFormEnum.AmateurFilm,
-    "Propagandafilm": efi.WorkFormEnum.AmateurFilm,
+    # Covered keys without mapping! Please provide mapping! #
+    "Dokumentarfilm": None,
+    "Dokumentarfilm mit Spielhandlung": None,
+    "Dokumentation": None,
+    "Animation": None,
+    "Reportage": None,
+    "Musiksendung": None,
+    "Propagandafilm": None,
 }

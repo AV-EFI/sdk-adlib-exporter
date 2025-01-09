@@ -1,6 +1,5 @@
 from avefi_schema import model as efi
 from mappings import precision_enum_mapping
-import logging
 
 
 def compute_has_duration(self):

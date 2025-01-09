@@ -15,23 +15,27 @@ def compute_in_language(self):
                 "language.type/value[@lang='3']/text()"
             )
             if not language_list or not language_type_list:
-                # currently skipping if either one not provided
                 continue
 
             language = language_list[0]
             language_type = language_type_list[0]
 
-            code = language_code_enum_mapping.get(language)
-            usage = language_usage_enum_mapping.get(language_type)
+            if language not in language_code_enum_mapping:
+                raise Exception("No mapping found for key:", language)
 
-            if code is True or usage is True:
-                # currently skipping if not mapped correctly
+            if language_type not in language_usage_enum_mapping:
+                raise Exception("No mapping found for key:", language_type)
+
+            if (
+                language_code_enum_mapping[language] is None
+                or language_usage_enum_mapping[language_type] is None
+            ):
                 continue
 
             languages.append(
                 efi.Language(
-                    code=code,
-                    usage=usage,
+                    code=language_code_enum_mapping[language],
+                    usage=language_usage_enum_mapping[language_type],
                 )
             )
 

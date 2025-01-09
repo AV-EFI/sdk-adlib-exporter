@@ -104,9 +104,9 @@ def process_records(record_category, allowed_parents):
     """
     # Loop over each priref in the current record category.
     for i, priref in enumerate(record_category.initial_prirefs):
-        print(
-            f"Handling {record_category.name} {i+1}/{len(record_category.initial_prirefs)} with priref {priref}"
-        )
+        # print(
+        #     f"Handling {record_category.name} {i+1}/{len(record_category.initial_prirefs)} with priref {priref}"
+        # )
         try:
             # Fetch the XML data from the collect_provider using the priref.
             xml = collect_provider.get_by_priref(priref)
