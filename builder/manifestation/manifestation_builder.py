@@ -15,7 +15,7 @@ class ManifestationBuilder(BaseBuilder):
             has_duration=compute_has_duration(self),
             has_extent=None,
             has_format=None,
-            has_note=None,
+            has_note=compute_has_note(self),
             has_webresource=None,
             described_by=compute_described_by(self),
             has_event=None,
