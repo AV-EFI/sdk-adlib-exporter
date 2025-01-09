@@ -8,7 +8,7 @@ class ManifestationBuilder(BaseBuilder):
     def build(self):
         return efi.Manifestation(
             has_colour_type=compute_has_colour_type(self),
-            has_item=None,
+            has_item=compute_has_item(self),
             has_sound_type=compute_has_sound_type(self),
             is_manifestation_of=compute_is_manifestation_of(self),
             same_as=None,
