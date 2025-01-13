@@ -1,6 +1,4 @@
-# source: https://github.com/bfidatadigipres/BFI_scripts/blob/main/adlib.py
-# retrieved last 13-05-2024
-# changes are marked
+#!/usr/bin/env python3
 
 """
 Python interface for [Adlib API]
@@ -8,15 +6,15 @@ Python interface for [Adlib API]
 Edward Anderson, 2017
 
 Converted for Python3
-Joanna White, 2021
+2021
 """
 
-import json
 import re
-
-from dicttoxml import dicttoxml
+import sys
+import json
 from lxml import etree, html
 from requests import Session, exceptions
+from dicttoxml import dicttoxml
 
 
 class Database:
@@ -30,18 +28,18 @@ class Database:
     def __init__(self, url):
         self.url = url
         self.session = Session()
-        self.default_parameters = {'limit': 10}
+        self.default_parameters = {"limit": 10}
 
     def _validate(self, response):
         try:
             data = etree.fromstring(response.content)
-            return Result('xml', data)
+            return Result("xml", data)
         except Exception:
             pass
 
         try:
             data = json.loads(response.text)
-            return Result('json', data)
+            return Result("json", data)
         except Exception:
             pass
 
@@ -66,16 +64,17 @@ class Database:
 
         return self._validate(response)
 
-    def post(self, params=None, payload=None, sync=True):
+    def post(self, params=None, payload=False, sync=True):
         """
         Send a POST request
         """
         if params is None:
             params = {}
         # Add payload data to request
-        # CHANGE: data={'data': payload} -> data=payload
         if payload:
-            response = self.session.post(self.url, params=params, data=payload)
+            response = self.session.post(
+                self.url, params=params, data={"data": payload}
+            )
         else:
             response = self.session.post(self.url, params=params)
 
@@ -90,10 +89,12 @@ class Database:
         Quickly obtain all the prirefs which match given query
         """
 
-        q = {'database': database,
-             'search': query_str,
-             'fields': 'priref',
-             'limit': '0'}
+        q = {
+            "database": database,
+            "search": query_str,
+            "fields": "priref",
+            "limit": "0",
+        }
 
         return self.get(q)
 
@@ -103,19 +104,21 @@ class Database:
         """
 
         def chunker(seq, size):
-            return (seq[pos:pos + size] for pos in range(0, len(seq), size))
+            return (seq[pos : pos + size] for pos in range(0, len(seq), size))
 
         def get_individual_records(prirefs, fields, group):
             for block in chunker(prirefs, group):
-                grouped_prirefs = ','.join(block)
+                grouped_prirefs = ",".join(block)
 
-                q = {'database': database,
-                     'search': f'priref={grouped_prirefs}',
-                     'limit': group,
-                     'output': 'json'}
+                q = {
+                    "database": database,
+                    "search": f"priref={grouped_prirefs}",
+                    "limit": group,
+                    "output": "json",
+                }
 
                 if fields:
-                    q['fields'] = ','.join(fields)
+                    q["fields"] = ",".join(fields)
 
                 r = self.get(q)
                 yield r
@@ -124,11 +127,11 @@ class Database:
 
         result = self.search(database, query_str)
         for r in result.records:
-            p = r.get('priref')
+            p = r.get("priref")
             prirefs.append(p)
 
         if not fields:
-            fields = ''
+            fields = ""
 
         hits = result.hits
         results = get_individual_records(prirefs, fields, group)
@@ -161,34 +164,34 @@ class Result:
             self.hits = int(self._hits())
 
     def _diagnostics(self):
-        if self.language == 'xml':
-            return self.data.xpath('//adlibXML/diagnostic')[0]
-        elif self.language == 'json':
-            return self.data['adlibJSON']['diagnostic']
+        if self.language == "xml":
+            return self.data.xpath("//adlibXML/diagnostic")[0]
+        elif self.language == "json":
+            return self.data["adlibJSON"]["diagnostic"]
 
     def _errors(self):
-        if self.language == 'xml':
-            if self.diagnostic.find('error') is not None:
+        if self.language == "xml":
+            if self.diagnostic.find("error") is not None:
                 return True
             else:
                 return False
-        elif self.language == 'json':
-            if 'error' in self.diagnostic:
+        elif self.language == "json":
+            if "error" in self.diagnostic:
                 return True
             else:
                 return False
 
     def _hits(self):
-        if self.language == 'xml':
-            return self.diagnostic.xpath('hits')[0].text
-        elif self.language == 'json':
-            return self.diagnostic['hits']
+        if self.language == "xml":
+            return self.diagnostic.xpath("hits")[0].text
+        elif self.language == "json":
+            return self.diagnostic["hits"]
 
     def _records(self):
-        if self.language == 'xml':
-            return self.data.xpath('//adlibXML/recordList/record')
-        elif self.language == 'json':
-            return self.data['adlibJSON']['recordList']['record']
+        if self.language == "xml":
+            return self.data.xpath("//adlibXML/recordList/record")
+        elif self.language == "json":
+            return self.data["adlibJSON"]["recordList"]["record"]
 
 
 class Collection:
@@ -234,7 +237,7 @@ class Cursor:
         Wrap XML fragment in boilerplate tags
         """
 
-        return f'<adlibXML><recordList>{fragment}</recordList></adlibXML>'
+        return f"<adlibXML><recordList>{fragment}</recordList></adlibXML>"
 
     def _fields_from_xpath(self, database, xpath_expression):
         """
@@ -246,7 +249,7 @@ class Cursor:
             self._getmetadata([database])
 
         # Extract field names from given XPath expression
-        fields = re.findall(r'([A-Za-z._]+)', xpath_expression)
+        fields = re.findall(r"([A-Za-z._]+)", xpath_expression)
         fields = [f for f in fields if f in self.metadata[database]]
 
         return fields
@@ -273,12 +276,14 @@ class Cursor:
 
             # Append valid XML fragments to `data`
             try:
-                l = html.fragments_fromstring(s, parser=etree.XMLParser(remove_blank_text=True))
+                l = html.fragments_fromstring(
+                    s, parser=etree.XMLParser(remove_blank_text=True)
+                )
                 for i in l:
                     xml = etree.fromstring(etree.tostring(i))
                     data.append(etree.tostring(xml))
             except Exception as e:
-                raise TypeError(f'Invalid XML:\n{s}') from e
+                raise TypeError(f"Invalid XML:\n{s}") from e
 
         return data
 
@@ -288,11 +293,10 @@ class Cursor:
         """
 
         # Prepare parameters
-        d = {'database': database,
-             f'search': 'priref={int(priref)}'}
+        d = {"database": database, f"search": "priref={int(priref)}"}
 
         if fields:
-            d['fields'] = ','.join(fields)
+            d["fields"] = ",".join(fields)
 
         # Download data
         result = self.db.get(d)
@@ -302,10 +306,10 @@ class Cursor:
         record = result.records[0]
 
         # Parse record
-        r = record.xpath('//record')[0]
+        r = record.xpath("//record")[0]
 
         # Clear attributes in <record> element
-        for i in r.xpath('//record[@*]'):
+        for i in r.xpath("//record[@*]"):
             i.attrib.clear()
 
         return r
@@ -317,23 +321,19 @@ class Cursor:
         if databases is None:
             databases = []
         # Get a list of the available databases
-        d = {'command': 'listdatabases',
-             'limit': 0,
-             'output': 'json'}
+        d = {"command": "listdatabases", "limit": 0, "output": "json"}
 
         result = self.db.get(d)
         for r in result.records:
-            dbase = r['database'][0]
-            write = r['writeAllowed'][0]
-            self.metadata[dbase] = {'writeAllowed': write}
+            dbase = r["database"][0]
+            write = r["writeAllowed"][0]
+            self.metadata[dbase] = {"writeAllowed": write}
 
         o = databases or self.metadata
 
         # Get field configuration metadata for each database
         for dbase in o:
-            d = {'command': 'getmetadata',
-                 'database': dbase,
-                 'limit': 0}
+            d = {"command": "getmetadata", "database": dbase, "limit": 0}
 
             result = self.db.get(d)
             for r in result.records:
@@ -346,12 +346,12 @@ class Cursor:
                     else:
                         data[element.tag] = element.text
 
-                field = data['displayName']
+                field = data["displayName"]
                 self.metadata[dbase][field] = data
 
         for d in self.metadata[dbase]:
             try:
-                group = self.metadata[dbase][d]['group']
+                group = self.metadata[dbase][d]["group"]
                 if group in self.field_groups:
                     self.field_groups[group].append(d)
                 else:
@@ -368,34 +368,40 @@ class Cursor:
         if database not in self.metadata:
             self._getmetadata([database])
 
-        if 'priref' not in self.metadata[database]:
+        if "priref" not in self.metadata[database]:
             self._getmetadata([database])
 
         grouped_data = []
         for d in data:
             keys = list(d.keys())
-            keys_joined = ', '.join(keys)
+            keys_joined = ", ".join(keys)
 
             # Verify that all keys are in database
             if all(key in self.metadata[database] for key in keys):
 
                 # Verify that fields are correctly grouped
                 try:
-                    g = list(set([self.metadata[database][k]['group'] for k in keys]))
+                    g = list(set([self.metadata[database][k]["group"] for k in keys]))
                     if len(g) == 1:
                         grouped_data.append({g[0]: d})
                     else:
                         # Given keys are Grouped, but erroneously in the same group
-                        raise ValueError(f'Fields [{keys_joined}] are not part of the same Group')
+                        raise ValueError(
+                            f"Fields [{keys_joined}] are not part of the same Group"
+                        )
                 except Exception:
                     if len(keys) == 1:
                         grouped_data.append(d)
                     else:
-                        raise ValueError(f'One or more of fields [{keys_joined}] is not Grouped')
+                        raise ValueError(
+                            f"One or more of fields [{keys_joined}] is not Grouped"
+                        )
 
             else:
                 # Given keys are erroneously in the same group
-                raise ValueError(f'One or more of fields [{keys_joined}] is not used in database [{database}]')
+                raise ValueError(
+                    f"One or more of fields [{keys_joined}] is not used in database [{database}]"
+                )
 
         return grouped_data
 
@@ -409,22 +415,22 @@ class Cursor:
         payload = self._boilerplate(payload)
 
         # Prepare parameters
-        w = {'database': database,
-             'command': method,
-             'xmltype': 'grouped'}
+        w = {"database": database, "command": method, "xmltype": "grouped"}
 
         # Append extra parameters
         for i in params:
             w[i] = params[i]
 
         if output:
-            w['output'] = output
+            w["output"] = output
 
         # POST
         response = self.db.post(params=w, payload=payload)
         return response
 
-    def create_occurrences(self, database, priref, data=None, prepend=False, output=None):
+    def create_occurrences(
+        self, database, priref, data=None, prepend=False, output=None
+    ):
         """
         Add new occurrence(s) of field(s) to a record.
         Use:
@@ -476,8 +482,8 @@ class Cursor:
         record = self._get(database, priref, fields)
 
         # Ensure <priref> is present in <record>
-        if record.xpath('priref') is None:
-            record.append(etree.fromstring(f'<priref>{priref}</priref>'))
+        if record.xpath("priref") is None:
+            record.append(etree.fromstring(f"<priref>{priref}</priref>"))
 
         # Append/prepend new occurrence(s) data to record
         if prepend:
@@ -489,12 +495,14 @@ class Cursor:
 
         # Convert record to XML string payload
         edited_record = etree.tostring(record)
-        edited_record = edited_record.decode('utf-8')
+        edited_record = edited_record.decode("utf-8")
         # Write data
         response = self._write(database, edited_record, output=output)
         return response
 
-    def delete_occurrences(self, database, priref, xpath_expression, fields=None, output=None):
+    def delete_occurrences(
+        self, database, priref, xpath_expression, fields=None, output=None
+    ):
         """
         Remove element(s) from record XML which match the given XPath expression
         """
@@ -511,11 +519,13 @@ class Cursor:
             m.clear()
 
         edited_record = etree.tostring(record)
-        edited_record = edited_record.decode('utf-8')
+        edited_record = edited_record.decode("utf-8")
 
         return self._write(database, edited_record, output=output)
 
-    def count_occurrences(self, database, xpath_expression, priref=None, record=None, fields=None):
+    def count_occurrences(
+        self, database, xpath_expression, priref=None, record=None, fields=None
+    ):
         """
         Return the count of matches for given XPath expression
         """
@@ -528,10 +538,12 @@ class Cursor:
         if priref is not None:
             record = self._get(database, priref, fields=fields)
 
-        count = record.xpath(f'count({xpath_expression})')
+        count = record.xpath(f"count({xpath_expression})")
         return int(count)
 
-    def append_to_occurrences(self, database, priref, xpath_expression, data=None, fields=None, output=None):
+    def append_to_occurrences(
+        self, database, priref, xpath_expression, data=None, fields=None, output=None
+    ):
         """
         Add an element to occurrence(s) specified by XPath expression
         """
@@ -551,7 +563,7 @@ class Cursor:
                 m.append(etree.fromstring(e))
 
         edited_record = etree.tostring(record)
-        edited_record = edited_record.decode('utf-8')
+        edited_record = edited_record.decode("utf-8")
 
         return self._write(database, edited_record, output=output)
 
@@ -572,24 +584,26 @@ class Cursor:
             return False
 
         # Create root
-        record = etree.XML('<record></record>')
+        record = etree.XML("<record></record>")
 
         # Append fragment elements to root
         for i in fragment:
             record.append(etree.fromstring(i))
 
         # Insert `priref=0` element
-        record.append(etree.fromstring('<priref>0</priref>'))
+        record.append(etree.fromstring("<priref>0</priref>"))
 
         # Convert XML object to string
         payload = etree.tostring(record)
-        payload = payload.decode('utf-8')
+        payload = payload.decode("utf-8")
         print(payload)
         print(params)
 
         # POST record
         if write:
-            response = self._write(database, payload, method='insertrecord', output=output, params=params)
+            response = self._write(
+                database, payload, method="insertrecord", output=output, params=params
+            )
             return response
         else:
             return payload
@@ -609,7 +623,7 @@ class Cursor:
             return False
 
         # Create root
-        record = etree.XML('<record></record>')
+        record = etree.XML("<record></record>")
 
         # Append fragment elements to root
         for i in fragment:
@@ -617,18 +631,20 @@ class Cursor:
 
         if not priref:
             # Insert `priref=0` element
-            record.append(etree.fromstring('<priref>0</priref>'))
+            record.append(etree.fromstring("<priref>0</priref>"))
         else:
             # Insert `priref` element
-            record.append(etree.fromstring(f'<priref>{priref}</priref>'))
+            record.append(etree.fromstring(f"<priref>{priref}</priref>"))
 
         # Convert XML object to string
         payload = etree.tostring(record)
-        payload = payload.decode('utf-8')
+        payload = payload.decode("utf-8")
 
-        return f'<adlibXML><recordList>{payload}</recordList></adlibXML>'
+        return f"<adlibXML><recordList>{payload}</recordList></adlibXML>"
 
-    def update_record(self, priref, database, data=None, output=None, params=None, write=True):
+    def update_record(
+        self, priref, database, data=None, output=None, params=None, write=True
+    ):
         """
         Update a record from given XML string or dictionary (or list of dictionaries)
         Could overwrite some field contents, use with care
@@ -646,28 +662,43 @@ class Cursor:
             return False
 
         # Create root
-        record = etree.XML('<record></record>')
+        record = etree.XML("<record></record>")
 
         # Append fragment elements to root
         for i in fragment:
             record.append(etree.fromstring(i))
 
         # Insert priref element
-        record.append(etree.fromstring(f'<priref>{priref}</priref>'))
+        record.append(etree.fromstring(f"<priref>{priref}</priref>"))
 
         # Convert XML object to string
         payload = etree.tostring(record)
-        payload = payload.decode('utf-8')
+        payload = payload.decode("utf-8")
         print(payload)
         # POST record
         if write:
             try:
-                response = self._write(database, payload, method='updaterecord', output=output, params=params)
+                response = self._write(
+                    database,
+                    payload,
+                    method="updaterecord",
+                    output=output,
+                    params=params,
+                )
                 return response
             except Exception as err:
                 return payload
 
-    def edit_record(self, database, priref, value, xpath_expression, fields=None, output=None, params=None):
+    def edit_record(
+        self,
+        database,
+        priref,
+        value,
+        xpath_expression,
+        fields=None,
+        output=None,
+        params=None,
+    ):
         """
         Replace a value selected by the given XPath expression with [value]
         """
@@ -685,7 +716,7 @@ class Cursor:
             e.text = value
 
         edited_record = etree.tostring(record)
-        edited_record = edited_record.decode('utf-8')
+        edited_record = edited_record.decode("utf-8")
 
         response = self._write(database, edited_record, output=output, params=params)
         return response
