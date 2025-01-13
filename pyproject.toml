@@ -13,6 +13,7 @@ lxml = "^5.2.2"
 requests = "^2.32.3"
 linkml-runtime = "^1.8.0"
 avefi-schema = {git = "https://github.com/AV-EFI/av-efi-schema.git", rev = "5316e383fb05b59036e5e0c481dd6b5dd4b22592"}
+requests-cache = "^1.2.1"
 
 
 [build-system]

@@ -7,9 +7,5 @@ __pycache__/
 # pycharm
 .idea
 
-# "cache" folders
-collect/
-people/
-thesau/
-pointer/
-
+#cache
+/adlib_cache.sqlite
