@@ -9,6 +9,7 @@ from builder.manifestation.helper.compute_has_colour_type import compute_has_col
 from builder.manifestation.helper.compute_has_sound_type import compute_has_sound_type
 from builder.manifestation.helper.compute_has_note import compute_has_note
 from builder.manifestation.helper.compute_has_item import compute_has_item
+from builder.manifestation.helper.compute_has_extent import compute_has_extent
 
 
 __all__ = [
