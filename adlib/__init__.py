@@ -11,7 +11,7 @@ class CachedDatabase(Database):
 
 
 try:
-    adlib_url = os.environ["SDK_ADLIB_URL"]
+    adlib_url = os.environ["SDK_ADLIB_URL_BREAKME"]
     adlib = CachedDatabase(adlib_url)
 except KeyError:
     raise EnvironmentError("SDK_ADLIB_URL environment variable is not set.")

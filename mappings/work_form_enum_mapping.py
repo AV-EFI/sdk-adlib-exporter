@@ -4,7 +4,7 @@ work_form_enum_mapping = {
     "Amateurfilm": efi.WorkFormEnum.AmateurFilm,
     "Kompilationsfilm": efi.WorkFormEnum.Compilation,
     "Spielfilm": efi.WorkFormEnum.Feature,
-    "Home Movie": efi.WorkFormEnum.HomeMovie,
+    "Home movie": efi.WorkFormEnum.HomeMovie,
     "Kurzfilm": efi.WorkFormEnum.Short,
     "Trailer": efi.WorkFormEnum.Trailer,
     "Episodenfilm": efi.WorkFormEnum.AnthologyFilm,

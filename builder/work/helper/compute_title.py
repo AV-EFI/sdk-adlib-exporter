@@ -24,6 +24,9 @@ def compute_title(self):
         title_type = xml_title.xpath("title.type/value[@lang='de-DE']/text()")
         title_article = xml_title.xpath("title.article/text()")
 
+        if not title_text:
+            continue
+
         full_title_text = title_text[0]
         ordering_title_text = None
 

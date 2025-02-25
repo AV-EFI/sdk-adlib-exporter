@@ -23,7 +23,7 @@ def compute_has_genre(self):
             same_as = []
 
             for source_xml in sources_xml:
-                term_number_list = source_xml.xpath("term.number/text()")
+                term_number_list = source_xml.xpath("source.number/text()")
                 if not term_number_list:
                     # sometimes a source is provided but the term_number field is just empty e.g. 8072.xml
                     continue
