@@ -27,6 +27,7 @@ language_code_enum_mapping = {
     "schweizerdeutsch": efi.LanguageCodeEnum.gsw,
     "bulgarisch": efi.LanguageCodeEnum.bul,
     "polnisch": efi.LanguageCodeEnum.pol,
+    "indonesisch": efi.LanguageCodeEnum.ind,
     # Covered keys without mapping! Please provide mapping! #
     "serbokroatisch": None,
     "belgisches Niederländisch": None,
