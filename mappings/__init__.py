@@ -7,5 +7,6 @@ from mappings.item_element_type_enum_mapping import item_element_type_enum_mappi
 from mappings.precision_enum_mapping import precision_enum_mapping
 from mappings.colour_type_enum_mapping import colour_type_enum_mapping
 from mappings.sound_type_enum_mapping import sound_type_enum_mapping
+from mappings.unit_enum_mapping import unit_enum_mapping
 
 __all__ = [name for name, obj in globals().items() if isinstance(obj, dict)]

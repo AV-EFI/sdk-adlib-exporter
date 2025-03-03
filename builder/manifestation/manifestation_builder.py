@@ -18,7 +18,7 @@ class ManifestationBuilder(BaseBuilder):
             has_note=compute_has_note(self),
             has_webresource=None,  # will not be implemented
             described_by=compute_described_by(self),
-            has_event=None,  # Todo
+            # has_event=None,  # Todo
             has_identifier=compute_has_identifier(self),
             in_language=compute_in_language(self),
             has_alternative_title=None,

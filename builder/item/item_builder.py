@@ -14,7 +14,7 @@ class ItemBuilder(BaseBuilder):
             is_derivative_of=None,  # will not be implemented
             is_item_of=compute_is_item_of(self),
             has_duration=compute_has_duration(self),
-            has_extent=None,  # Todo
+            has_extent=compute_has_extent(self),
             has_format=None,  # Todo
             has_note=None,  # will not be implemented
             has_webresource=compute_has_webresource(self),
