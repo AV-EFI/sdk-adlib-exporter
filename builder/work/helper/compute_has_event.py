@@ -111,15 +111,13 @@ def compute_has_event(self):
 
     # date handling
 
-    production_date_start = self.xml.xpath(
-        "Production_date/production.date.start/text()"
-    )
+    production_date_start = self.xml.xpath("Dating/dating.date.start/text()")
     production_date_start_prec = self.xml.xpath(
-        "Production_date/production.date.start.prec/value[@lang='3'][text()='circa']/text()"
+        "Dating/dating.date.start.prec/value[@lang='3'][text()='circa']/text()"
     )
-    production_date_end = self.xml.xpath("Production_date/production.date.end/text()")
+    production_date_end = self.xml.xpath("Dating/dating.date.end/text()")
     production_date_end_prec = self.xml.xpath(
-        "Production_date/production.date.end.prec/value[@lang='3'][text()='circa']/text()"
+        "Dating/dating.date.end.prec/value[@lang='3'][text()='circa']/text()"
     )
 
     has_date = None
