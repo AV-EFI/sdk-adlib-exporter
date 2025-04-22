@@ -72,9 +72,7 @@ class Database:
             params = {}
         # Add payload data to request
         if payload:
-            response = self.session.post(
-                self.url, params=params, data={"data": payload}
-            )
+            response = self.session.post(self.url, params=params, data=payload)
         else:
             response = self.session.post(self.url, params=params)
 
@@ -674,8 +672,6 @@ class Cursor:
         # Convert XML object to string
         payload = etree.tostring(record)
         payload = payload.decode("utf-8")
-        print(payload)
-        # POST record
         if write:
             try:
                 response = self._write(
@@ -686,8 +682,8 @@ class Cursor:
                     params=params,
                 )
                 return response
-            except Exception as err:
-                return payload
+            except Exception as e:
+                raise e
 
     def edit_record(
         self,

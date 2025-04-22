@@ -12,12 +12,12 @@ class CachedDatabase(Database):
 
 try:
     adlib_url = os.environ["SDK_ADLIB_URL_BREAKME"]
-    adlib = CachedDatabase(adlib_url)
+    adlib_database = CachedDatabase(adlib_url)
 except KeyError:
-    raise EnvironmentError("SDK_ADLIB_URL environment variable is not set.")
+    raise EnvironmentError("SDK_ADLIB_URL_BREAKME environment variable is not set.")
 
 # Initialize the different providers for Adlib data retrieval
-pointer_file_provider = PointerFileProvider(adlib, database="collect.inf")
-collect_provider = RecordProvider(adlib, database="collect.inf")
-people_provider = RecordProvider(adlib, database="people.inf")
-thesau_provider = RecordProvider(adlib, database="thesau.inf")
+pointer_file_provider = PointerFileProvider(adlib_database, database="collect.inf")
+collect_provider = RecordProvider(adlib_database, database="collect.inf")
+people_provider = RecordProvider(adlib_database, database="people.inf")
+thesau_provider = RecordProvider(adlib_database, database="thesau.inf")
