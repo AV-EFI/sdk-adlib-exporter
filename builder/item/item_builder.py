@@ -1,7 +1,15 @@
-from builder.base.base_builder import BaseBuilder
 from avefi_schema import model as efi
-from builder.item.helper import *
-from builder.base.helper import *
+
+from builder.base.base_builder import BaseBuilder
+from builder.base.helper.compute_described_by import compute_described_by
+from builder.base.helper.compute_has_duration import compute_has_duration
+from builder.base.helper.compute_has_extent import compute_has_extent
+from builder.base.helper.compute_has_identifier import compute_has_identifier
+from builder.base.helper.compute_in_language import compute_in_language
+from builder.item.helper.compute_element_type import compute_element_type
+from builder.item.helper.compute_has_primary_title import compute_has_primary_title
+from builder.item.helper.compute_has_webresource import compute_has_webresource
+from builder.item.helper.compute_is_item_of import compute_is_item_of
 
 
 class ItemBuilder(BaseBuilder):

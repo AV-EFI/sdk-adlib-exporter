@@ -9,4 +9,4 @@ class BaseBuilder(ABC):
 
     @abstractmethod
     def build(self):
-        """Method to build the entity. Must be implemented by child classes."""
+        pass

@@ -1,7 +1,21 @@
-from builder.base.base_builder import BaseBuilder
 from avefi_schema import model as efi
-from builder.manifestation.helper import *
-from builder.base.helper import *
+
+from builder.base.base_builder import BaseBuilder
+from builder.base.helper.compute_described_by import compute_described_by
+from builder.base.helper.compute_has_duration import compute_has_duration
+from builder.base.helper.compute_has_extent import compute_has_extent
+from builder.base.helper.compute_has_identifier import compute_has_identifier
+from builder.base.helper.compute_in_language import compute_in_language
+from builder.manifestation.helper.compute_has_colour_type import compute_has_colour_type
+from builder.manifestation.helper.compute_has_item import compute_has_item
+from builder.manifestation.helper.compute_has_note import compute_has_note
+from builder.manifestation.helper.compute_has_primary_title import (
+    compute_has_primary_title,
+)
+from builder.manifestation.helper.compute_has_sound_type import compute_has_sound_type
+from builder.manifestation.helper.compute_is_manifestation_of import (
+    compute_is_manifestation_of,
+)
 
 
 class ManifestationBuilder(BaseBuilder):
