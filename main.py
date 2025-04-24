@@ -1,18 +1,28 @@
+import logging
 import os
 import tempfile
+
 from linkml_runtime.dumpers import JSONDumper
+
 from adlib import collect_provider, pointer_file_provider
+from builder.base.utils import UnresolvableReferenceError
 from builder.item.item_builder import ItemBuilder
 from builder.manifestation.manifestation_builder import ManifestationBuilder
 from builder.work.work_builder import WorkBuilder
-import logging
 
-logging.basicConfig(
-    filename="errors.log",
-    level=logging.INFO,
-    format="%(asctime)s - %(message)s",
-    filemode="w",
-)
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+
+all_logs_handler = logging.FileHandler("all.log", mode="w")
+all_logs_handler.setLevel(logging.INFO)
+all_logs_handler.setFormatter(formatter)
+logger.addHandler(all_logs_handler)
+
+error_logs_handler = logging.FileHandler("errors.log", mode="w")
+error_logs_handler.setLevel(logging.ERROR)
+error_logs_handler.setFormatter(formatter)
+logger.addHandler(error_logs_handler)
 
 
 class RecordCategory:
@@ -41,27 +51,27 @@ def main():
     and then write them to a JSON file.
     """
     works = RecordCategory(
-        priref=462,
+        priref=3,
         builder=WorkBuilder,
         name="work",
     )
     manifestations = RecordCategory(
-        priref=468,
+        priref=4,
         builder=ManifestationBuilder,
         name="manifestation",
     )
     items = RecordCategory(
-        priref=469,
+        priref=5,
         builder=ItemBuilder,
         name="item",
     )
 
-    print(
+    logging.info(
         f"# Retrieved {len(works.initial_prirefs + manifestations.initial_prirefs + items.initial_prirefs)} prirefs:"
     )
 
     for i, record_category in enumerate([works, manifestations, items]):
-        print(
+        logging.info(
             f"{i+1}. {len(record_category.initial_prirefs)} ({record_category.name}s)"
         )
 
@@ -73,7 +83,7 @@ def main():
             (items, manifestations.final_prirefs),
         ]
     ):
-        print(f"# Handling {record_category.name}s")
+        logging.info(f"# Handling {record_category.name}s")
         process_records(
             record_category=record_category,
             allowed_parents=allowed_parents,
@@ -81,7 +91,7 @@ def main():
 
     records = works.records + manifestations.records + items.records
 
-    print(f"# Built {len(records)} records")
+    logging.info(f"# Built {len(records)} records")
 
     # Create a temporary file for the JSON output.
     file_obj, json_file = tempfile.mkstemp(suffix=".json")
@@ -104,9 +114,9 @@ def process_records(record_category, allowed_parents):
     """
     # Loop over each priref in the current record category.
     for i, priref in enumerate(record_category.initial_prirefs):
-        # print(
-        #     f"Handling {record_category.name} {i+1}/{len(record_category.initial_prirefs)} with priref {priref}"
-        # )
+        logging.info(
+            f"Handling {record_category.name} {i+1}/{len(record_category.initial_prirefs)} with priref {priref}"
+        )
         try:
             # Fetch the XML data from the collect_provider using the priref.
             xml = collect_provider.get_by_priref(priref)
@@ -125,10 +135,10 @@ def process_records(record_category, allowed_parents):
             # Store the built record and its priref.
             record_category.records.append(record)
             record_category.final_prirefs.append(record.has_identifier[0].id)
+        except UnresolvableReferenceError as e:
+            logging.error(f"Error during mapping of {priref}: {type(e).__name__}, {e}")
         except Exception as e:
-            # Silently handle any errors during the record-building process.
-            # To debug, comment/uncomment the line below:
-            print(f"Error during mapping of {priref}:", e)
+            logging.error(f"Error during mapping of {priref}: {e}", exc_info=True)
             pass
 
 
