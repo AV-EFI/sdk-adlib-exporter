@@ -1,4 +1,4 @@
-from mappings import colour_type_enum_mapping
+from mappings.colour_type_enum_mapping import colour_type_enum_mapping
 
 
 def compute_has_colour_type(self):

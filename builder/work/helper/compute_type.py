@@ -1,4 +1,4 @@
-from mappings import work_variant_type_enum_mapping
+from mappings.work_variant_type_enum_mapping import work_variant_type_enum_mapping
 
 
 def compute_type(self):

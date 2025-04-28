@@ -1,5 +1,6 @@
 from avefi_schema import model as efi
-from mappings import unit_enum_mapping
+
+from mappings.unit_enum_mapping import unit_enum_mapping
 
 
 def compute_has_extent(self):

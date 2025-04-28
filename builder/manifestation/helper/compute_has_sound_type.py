@@ -1,4 +1,4 @@
-from mappings import sound_type_enum_mapping
+from mappings.sound_type_enum_mapping import sound_type_enum_mapping
 
 
 def compute_has_sound_type(self):

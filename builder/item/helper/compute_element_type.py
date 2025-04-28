@@ -1,4 +1,4 @@
-from mappings import item_element_type_enum_mapping
+from mappings.item_element_type_enum_mapping import item_element_type_enum_mapping
 
 
 def compute_element_type(self):

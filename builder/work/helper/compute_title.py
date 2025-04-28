@@ -1,7 +1,8 @@
 # note alternative title selection for works without titles or missing mapping
 
 from avefi_schema import model as efi
-from mappings import title_type_enum_mapping
+
+from mappings.title_type_enum_mapping import title_type_enum_mapping
 
 
 def compute_has_alternative_title(self):

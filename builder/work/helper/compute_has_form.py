@@ -1,4 +1,4 @@
-from mappings import work_form_enum_mapping
+from mappings.work_form_enum_mapping import work_form_enum_mapping
 
 
 def compute_has_form(self):
