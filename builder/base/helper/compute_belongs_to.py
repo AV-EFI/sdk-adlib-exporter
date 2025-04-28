@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-from builder.base.utils import UnresolvableReferenceError
+from builder.base.custom_errors import UnresolvableReferenceError
 
 
 def compute_belongs_to(self):

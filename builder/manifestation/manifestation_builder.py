@@ -7,6 +7,7 @@ from builder.base.helper.compute_has_extent import compute_has_extent
 from builder.base.helper.compute_has_identifier import compute_has_identifier
 from builder.base.helper.compute_in_language import compute_in_language
 from builder.manifestation.helper.compute_has_colour_type import compute_has_colour_type
+from builder.manifestation.helper.compute_has_event import compute_has_event
 from builder.manifestation.helper.compute_has_item import compute_has_item
 from builder.manifestation.helper.compute_has_note import compute_has_note
 from builder.manifestation.helper.compute_has_primary_title import (
@@ -32,7 +33,7 @@ class ManifestationBuilder(BaseBuilder):
             has_note=compute_has_note(self),
             has_webresource=None,  # will not be implemented
             described_by=compute_described_by(self),
-            # has_event=None,  # Todo
+            has_event=compute_has_event(self),
             has_identifier=compute_has_identifier(self),
             in_language=compute_in_language(self),
             has_alternative_title=None,

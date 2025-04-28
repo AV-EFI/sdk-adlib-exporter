@@ -5,7 +5,7 @@ import tempfile
 from linkml_runtime.dumpers import JSONDumper
 
 from adlib import collect_provider, pointer_file_provider
-from builder.base.utils import UnresolvableReferenceError
+from builder.base.custom_errors import UnresolvableReferenceError
 from builder.item.item_builder import ItemBuilder
 from builder.manifestation.manifestation_builder import ManifestationBuilder
 from builder.work.work_builder import WorkBuilder

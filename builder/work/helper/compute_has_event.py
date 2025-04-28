@@ -1,5 +1,7 @@
 from avefi_schema import model as efi
+
 from adlib import people_provider, thesau_provider
+from builder.base.utils import get_formatted_date
 
 
 def compute_has_event(self):
@@ -123,16 +125,11 @@ def compute_has_event(self):
     has_date = None
 
     if production_date_start and production_date_end:
-        production_date_start_value = production_date_start[0] + (
-            "~" if production_date_start_prec else ""
-        )
-        production_date_end_value = production_date_end[0] + (
-            "~" if production_date_end_prec else ""
-        )
-        has_date = (
-            production_date_start_value
-            if production_date_start_value == production_date_end_value
-            else f"{production_date_start_value}/{production_date_end_value}"
+        has_date = get_formatted_date(
+            production_date_start[0],
+            production_date_start_prec[0] if production_date_start_prec else None,
+            production_date_end[0],
+            production_date_end_prec[0] if production_date_end_prec else None,
         )
 
     # location handling
