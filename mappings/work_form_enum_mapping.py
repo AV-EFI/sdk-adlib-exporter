@@ -3,7 +3,6 @@ from avefi_schema import model as efi
 work_form_enum_mapping = {
     "Amateurfilm": efi.WorkFormEnum.AmateurFilm,
     "Kompilationsfilm": efi.WorkFormEnum.Compilation,
-    "Spielfilm": efi.WorkFormEnum.Feature,
     "Home movie": efi.WorkFormEnum.HomeMovie,
     "Kurzfilm": efi.WorkFormEnum.Short,
     "Trailer": efi.WorkFormEnum.Trailer,
@@ -16,6 +15,7 @@ work_form_enum_mapping = {
     "Musikvideo": efi.WorkFormEnum.MusicVideo,
     "Wochenschau": efi.WorkFormEnum.Newsreel,
     # Covered keys without mapping! Please provide mapping! #
+    "Spielfilm": None,
     "Dokumentarfilm": None,
     "Dokumentarfilm mit Spielhandlung": None,
     "Dokumentation": None,
