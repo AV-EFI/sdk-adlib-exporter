@@ -5,6 +5,9 @@ from builder.base.utils import get_formatted_date
 from mappings.cinematography_activity_type_enum import cinematography_activity_type_enum
 from mappings.directing_activity_type_enum import directing_activity_type_enum
 from mappings.editing_activity_type_enum import editing_activity_type_enum
+from mappings.production_design_activity_type_enum import (
+    production_design_activity_type_enum,
+)
 from mappings.writing_activity_type_enum import writing_activity_type_enum
 
 
@@ -65,14 +68,15 @@ def compute_has_event(self):
             )
         )
 
-    all_activities = [
+    activity_to_type_mapping = [
         (efi.DirectingActivity, directing_activity_type_enum),
         (efi.CinematographyActivity, cinematography_activity_type_enum),
         (efi.EditingActivity, editing_activity_type_enum),
         (efi.WritingActivity, writing_activity_type_enum),
+        (efi.ProductionDesignActivity, production_design_activity_type_enum),
     ]
 
-    for activity, activity_type_enum in all_activities:
+    for activity, activity_type_enum in activity_to_type_mapping:
         for activity_type_name in activity_type_enum.keys():
             xml_entity_list = self.xml.xpath(
                 f"Credits[credit.type/value[@lang='de-DE'][text()='{activity_type_name}']]"
