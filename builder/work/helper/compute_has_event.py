@@ -2,6 +2,10 @@ from avefi_schema import model as efi
 
 from adlib import people_provider, thesau_provider
 from builder.base.utils import get_formatted_date
+from mappings.cinematography_activity_type_enum import cinematography_activity_type_enum
+from mappings.directing_activity_type_enum import directing_activity_type_enum
+from mappings.editing_activity_type_enum import editing_activity_type_enum
+from mappings.writing_activity_type_enum import writing_activity_type_enum
 
 
 def compute_has_event(self):
@@ -15,7 +19,7 @@ def compute_has_event(self):
 
     cast_members = []
 
-    xml_cast_list = self.xml.xpath("cast")
+    xml_cast_list = self.xml.xpath("Cast")
 
     for xml_cast in xml_cast_list:
         try:
@@ -61,55 +65,56 @@ def compute_has_event(self):
             )
         )
 
-    # directors
+    all_activities = [
+        (efi.DirectingActivity, directing_activity_type_enum),
+        (efi.CinematographyActivity, cinematography_activity_type_enum),
+        (efi.EditingActivity, editing_activity_type_enum),
+        (efi.WritingActivity, writing_activity_type_enum),
+    ]
 
-    xml_directors_list = self.xml.xpath("credits[credit.type/value[text()='Regie']]")
+    for activity, activity_type_enum in all_activities:
+        for activity_type_name in activity_type_enum.keys():
+            xml_entity_list = self.xml.xpath(
+                f"Credits[credit.type/value[@lang='de-DE'][text()='{activity_type_name}']]"
+            )
 
-    directors = []
-    for xml_director in xml_directors_list:
-        try:
-            name_list = xml_director.xpath("credit.name/value/text()")
-            priref_list = xml_director.xpath("credit.name.lref/text()")
+            for xml_entity in xml_entity_list:
+                name_list = xml_entity.xpath("credit.name/value/text()")
+                priref_list = xml_entity.xpath("credit.name.lref/text()")
 
-            if not name_list or not priref_list:
-                # priref and name not listed for example: see 150010458.xml
-                continue
-
-            name = name_list[0]
-            priref = priref_list[0]
-
-            person_xml = people_provider.get_by_priref(priref)
-            sources_xml = person_xml.xpath("Source")
-            # print(person_name, priref)
-
-            same_as = []
-
-            for source_xml in sources_xml:
-                # Note how is it called source.number in people.inf instead of term.number like in thesau.inf!
-                source_number_list = source_xml.xpath("source.number/text()")
-                if not source_number_list:
-                    # sometimes a source is provided but the source_number field is just empty e.g. 8072.xml
+                if not name_list or not priref_list:
                     continue
-                source_number = source_number_list[0]
-                if "gnd" in source_number:
-                    same_as.append(
-                        efi.GNDResource(
-                            id=source_number.split("/")[-1],
+
+                name = name_list[0]
+                priref = priref_list[0]
+
+                person_xml = people_provider.get_by_priref(priref)
+                sources_xml = person_xml.xpath("Source")
+
+                same_as = []
+
+                for source_xml in sources_xml:
+                    source_number_list = source_xml.xpath("source.number/text()")
+                    if not source_number_list:
+                        continue
+                    source_number = source_number_list[0]
+                    if "gnd" in source_number:
+                        same_as.append(
+                            efi.GNDResource(
+                                id=source_number.split("/")[-1],
+                            )
                         )
+
+                activities.append(
+                    activity(
+                        type=activity_type_enum[activity_type_name],
+                        has_agent=efi.Agent(
+                            type=efi.AgentTypeEnum.Person,
+                            has_name=name,
+                            same_as=same_as,
+                        ),
                     )
-            directors.append(
-                efi.Agent(type=efi.AgentTypeEnum.Person, has_name=name, same_as=same_as)
-            )
-
-        except Exception as e:
-            raise Exception("Problem with has_event (Regie, Director):", e)
-
-    if directors:
-        activities.append(
-            efi.DirectingActivity(
-                type=efi.DirectingActivityTypeEnum.Director, has_agent=directors
-            )
-        )
+                )
 
     # date handling
 
