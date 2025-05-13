@@ -5,6 +5,7 @@ from builder.base.utils import get_formatted_date
 from mappings.cinematography_activity_type_enum import cinematography_activity_type_enum
 from mappings.directing_activity_type_enum import directing_activity_type_enum
 from mappings.editing_activity_type_enum import editing_activity_type_enum
+from mappings.producing_activity_type_enum import producing_activity_type_enum
 from mappings.production_design_activity_type_enum import (
     production_design_activity_type_enum,
 )
@@ -58,6 +59,7 @@ def compute_has_event(self):
         (efi.EditingActivity, editing_activity_type_enum),
         (efi.WritingActivity, writing_activity_type_enum),
         (efi.ProductionDesignActivity, production_design_activity_type_enum),
+        (efi.ProducingActivity, producing_activity_type_enum),
     ]
 
     for activity, activity_type_enum in activity_to_type_mapping:
