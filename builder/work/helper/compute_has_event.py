@@ -2,6 +2,7 @@ from avefi_schema import model as efi
 
 from adlib import people_provider, thesau_provider
 from builder.base.utils import get_formatted_date
+from mappings.agent_type_enum import agent_type_enum
 from mappings.cinematography_activity_type_enum import cinematography_activity_type_enum
 from mappings.directing_activity_type_enum import directing_activity_type_enum
 from mappings.editing_activity_type_enum import editing_activity_type_enum
@@ -39,9 +40,17 @@ def compute_has_event(self):
 
             cast_members.append(
                 efi.Agent(
-                    type=efi.AgentTypeEnum.Person,
+                    type=_get_type_for_priref(
+                        priref,
+                        people_provider,
+                    ),
                     has_name=name,
-                    same_as=_get_same_as_for_priref(priref, people_provider),
+                    same_as=_get_same_as_for_priref(
+                        priref,
+                        people_provider,
+                        include_gnd=True,
+                        include_filmportal=True,
+                    ),
                 )
             )
         except Exception as e:
@@ -84,9 +93,17 @@ def compute_has_event(self):
                     activity(
                         type=activity_type_enum[activity_type_name],
                         has_agent=efi.Agent(
-                            type=efi.AgentTypeEnum.Person,
+                            type=_get_type_for_priref(
+                                priref,
+                                people_provider,
+                            ),
                             has_name=name,
-                            same_as=_get_same_as_for_priref(priref, people_provider),
+                            same_as=_get_same_as_for_priref(
+                                priref,
+                                people_provider,
+                                include_gnd=True,
+                                include_filmportal=True,
+                            ),
                         ),
                     )
                 )
@@ -138,16 +155,25 @@ def _get_located_in(self):
             located_in.append(
                 efi.GeographicName(
                     has_name=production_country_name,
-                    same_as=_get_same_as_for_priref(priref, thesau_provider),
+                    same_as=_get_same_as_for_priref(
+                        priref,
+                        thesau_provider,
+                        include_gnd=True,
+                    ),
                 )
             )
     except Exception as e:
-        raise Exception("Problem with has_event (location):", e)
+        raise Exception("Problem with has_event.located_in:", e)
 
     return located_in
 
 
-def _get_same_as_for_priref(priref, provider):
+def _get_same_as_for_priref(
+    priref,
+    provider,
+    include_gnd=False,
+    include_filmportal=False,
+):
     same_as = []
 
     try:
@@ -159,13 +185,13 @@ def _get_same_as_for_priref(priref, provider):
             if not source_number_list:
                 continue
             source_number = source_number_list[0]
-            if "d-nb.info/gnd/" in source_number:
+            if include_gnd and "d-nb.info/gnd/" in source_number:
                 same_as.append(
                     efi.GNDResource(
                         id=source_number.split("/")[-1],
                     )
                 )
-            if "www.filmportal.de" in source_number:
+            if include_filmportal and "www.filmportal.de" in source_number:
                 same_as.append(
                     efi.FilmportalResource(
                         id=source_number.split("_")[-1],
@@ -173,6 +199,25 @@ def _get_same_as_for_priref(priref, provider):
                 )
 
     except Exception as e:
-        raise Exception("Problem with same_as calculation:", e)
+        raise Exception("Problem with same_as computation:", e)
 
     return same_as
+
+
+def _get_type_for_priref(priref, provider):
+    try:
+        xml_data = provider.get_by_priref(priref)
+        record_type_list = xml_data.xpath("record_type/value[@lang='3']/text()")
+
+        if not record_type_list:
+            return efi.AgentTypeEnum.Person
+
+        record_type = record_type_list[0]
+
+        if record_type not in agent_type_enum:
+            raise Exception("No mapping found for key:", record_type)
+
+        return agent_type_enum[record_type]
+
+    except Exception as e:
+        raise Exception("Problem with has_agent.type computation:", e)
