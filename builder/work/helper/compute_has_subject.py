@@ -1,5 +1,7 @@
 from avefi_schema import model as efi
+
 from adlib import thesau_provider, people_provider
+from builder.base.utils import get_same_as_for_priref
 
 
 def compute_has_subject(self):
@@ -20,47 +22,18 @@ def compute_has_subject(self):
                 continue
             person_name = person_name_list[0]
             priref = priref_list[0]
-            person_xml = people_provider.get_by_priref(priref)
-            sources_xml = person_xml.xpath("Source")
-            # print(person_name, priref)
-
-            same_as = []
-
-            for source_xml in sources_xml:
-                # Note how is it called source.number in people.inf instead of term.number like in thesau.inf!
-                source_number_list = source_xml.xpath("source.number/text()")
-                if not source_number_list:
-                    # sometimes a source is provided but the source_number field is just empty e.g. 8072.xml
-                    continue
-                source_number = source_number_list[0]
-
-                if "http://d-nb.info/gnd/" in source_number:
-                    same_as.append(
-                        efi.GNDResource(
-                            id=source_number.split("/")[-1],
-                        )
-                    )
-
-                if "https://www.filmportal.de/person/" in source_number:
-                    same_as.append(
-                        efi.FilmportalResource(
-                            id=source_number.split("_")[-1],
-                        )
-                    )
-
-                # does not occur in test data set
-                if "http://vocab.getty.edu/page/tgn/" in source_number:
-                    same_as.append(
-                        efi.TGNResource(
-                            id=source_number.split("/")[-1],
-                        )
-                    )
 
             # CURRENTLY WRONG !!!! HOW TO DECIDE WHICH AGENT TYPE ????
 
             person = efi.Agent(
                 has_name=person_name,
-                same_as=same_as,
+                same_as=get_same_as_for_priref(
+                    priref,
+                    people_provider,
+                    include_gnd=True,
+                    include_filmportal=True,
+                    include_tgn=True,
+                ),
                 type=efi.AgentTypeEnum.Person,
             )
             persons.append(person)
@@ -89,38 +62,14 @@ def compute_has_subject(self):
             priref = priref_list[0]
 
             subject_xml = thesau_provider.get_by_priref(priref)
-            sources_xml = subject_xml.xpath("Source")
 
-            same_as = []
-
-            for source_xml in sources_xml:
-                source_number_list = source_xml.xpath("term.number/text()")
-                if not source_number_list:
-                    # sometimes a source is provided but the source_number field is just empty e.g. 8072.xml
-                    continue
-                source_number = source_number_list[0]
-
-                if "http://d-nb.info/gnd/" in source_number:
-                    same_as.append(
-                        efi.GNDResource(
-                            id=source_number.split("/")[-1],
-                        )
-                    )
-
-                if "http://vocab.getty.edu/page/tgn/" in source_number:
-                    same_as.append(
-                        efi.TGNResource(
-                            id=source_number.split("/")[-1],
-                        )
-                    )
-
-                # does not occur in test data set
-                if "https://www.filmportal.de/person/" in source_number:
-                    same_as.append(
-                        efi.FilmportalResource(
-                            id=source_number.split("_")[-1],
-                        )
-                    )
+            same_as = get_same_as_for_priref(
+                priref,
+                thesau_provider,
+                include_gnd=True,
+                include_filmportal=True,
+                include_tgn=True,
+            )
 
             # decide if geographic oder subject
             term_types = subject_xml.xpath("term.type/value[@lang='3']/text()")

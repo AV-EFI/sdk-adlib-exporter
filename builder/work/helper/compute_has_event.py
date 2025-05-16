@@ -1,7 +1,7 @@
 from avefi_schema import model as efi
 
 from adlib import people_provider, thesau_provider
-from builder.base.utils import get_formatted_date
+from builder.base.utils import get_formatted_date, get_same_as_for_priref
 from mappings.agent_type_enum import agent_type_enum
 from mappings.cinematography_activity_type_enum import cinematography_activity_type_enum
 from mappings.directing_activity_type_enum import directing_activity_type_enum
@@ -45,7 +45,7 @@ def compute_has_event(self):
                         people_provider,
                     ),
                     has_name=name,
-                    same_as=_get_same_as_for_priref(
+                    same_as=get_same_as_for_priref(
                         priref,
                         people_provider,
                         include_gnd=True,
@@ -98,7 +98,7 @@ def compute_has_event(self):
                                 people_provider,
                             ),
                             has_name=name,
-                            same_as=_get_same_as_for_priref(
+                            same_as=get_same_as_for_priref(
                                 priref,
                                 people_provider,
                                 include_gnd=True,
@@ -155,7 +155,7 @@ def _get_located_in(self):
             located_in.append(
                 efi.GeographicName(
                     has_name=production_country_name,
-                    same_as=_get_same_as_for_priref(
+                    same_as=get_same_as_for_priref(
                         priref,
                         thesau_provider,
                         include_gnd=True,
@@ -166,42 +166,6 @@ def _get_located_in(self):
         raise Exception("Problem with has_event.located_in:", e)
 
     return located_in
-
-
-def _get_same_as_for_priref(
-    priref,
-    provider,
-    include_gnd=False,
-    include_filmportal=False,
-):
-    same_as = []
-
-    try:
-        xml_data = provider.get_by_priref(priref)
-        xml_sources = xml_data.xpath("Source")
-
-        for source_xml in xml_sources:
-            source_number_list = source_xml.xpath("source.number/text()")
-            if not source_number_list:
-                continue
-            source_number = source_number_list[0]
-            if include_gnd and "d-nb.info/gnd/" in source_number:
-                same_as.append(
-                    efi.GNDResource(
-                        id=source_number.split("/")[-1],
-                    )
-                )
-            if include_filmportal and "www.filmportal.de" in source_number:
-                same_as.append(
-                    efi.FilmportalResource(
-                        id=source_number.split("_")[-1],
-                    )
-                )
-
-    except Exception as e:
-        raise Exception("Problem with same_as computation:", e)
-
-    return same_as
 
 
 def _get_type_for_priref(priref, provider):
