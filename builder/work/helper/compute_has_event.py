@@ -159,6 +159,7 @@ def _get_located_in(self):
                         priref,
                         thesau_provider,
                         include_gnd=True,
+                        include_tgn=True,
                     ),
                 )
             )
