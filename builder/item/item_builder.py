@@ -7,6 +7,7 @@ from builder.base.helper.compute_has_extent import compute_has_extent
 from builder.base.helper.compute_has_identifier import compute_has_identifier
 from builder.base.helper.compute_in_language import compute_in_language
 from builder.item.helper.compute_element_type import compute_element_type
+from builder.item.helper.compute_has_access_status import compute_has_access_status
 from builder.item.helper.compute_has_primary_title import compute_has_primary_title
 from builder.item.helper.compute_has_webresource import compute_has_webresource
 from builder.item.helper.compute_is_item_of import compute_is_item_of
@@ -17,7 +18,7 @@ class ItemBuilder(BaseBuilder):
     def build(self):
         return efi.Item(
             element_type=compute_element_type(self),
-            has_access_status=None,  # Todo
+            has_access_status=compute_has_access_status(self),
             is_copy_of=None,  # will not be implemented
             is_derivative_of=None,  # will not be implemented
             is_item_of=compute_is_item_of(self),

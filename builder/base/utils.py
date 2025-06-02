@@ -64,3 +64,10 @@ def get_same_as_for_priref(
 
     except Exception as e:
         raise Exception("Problem with same_as computation:", e)
+
+
+def get_mapped_enum_value(enum_map, key):
+    if key not in enum_map:
+        raise Exception("No mapping found for key:", key)
+
+    return enum_map[key]
