@@ -1,45 +1,32 @@
 from avefi_schema import model as efi
+
 from adlib import thesau_provider
+from builder.base.base_builder import XMLContainer, BaseBuilder
+from builder.base.utils import get_same_as_for_priref
 
 
-def compute_has_genre(self):
-    xml_content_genres = self.xml.xpath("Content_genre")
+def compute_has_genre(record: BaseBuilder):
+    xml_content_genres = record.xml.get_all("Content_genre")
 
     genres = []
 
-    try:
-        for xml_content_genre in xml_content_genres:
-            genre_name_list = xml_content_genre.xpath("content.genre/value/text()")
-            priref_list = xml_content_genre.xpath("content.genre.lref/text()")
-            if not genre_name_list or not priref_list:
-                # sometimes a genre is provided but the not name or priref e.g. 150007840.xml
-                continue
-            genre_name = genre_name_list[0]
-            priref = priref_list[0]
-            # print(genre_name, priref)
-            genre_xml = thesau_provider.get_by_priref(priref)
-            sources_xml = genre_xml.xpath("Source")
+    for xml_content_genre in xml_content_genres:
+        genre_name = XMLContainer(xml_content_genre).get_first(
+            "content.genre/value/text()"
+        )
+        priref = XMLContainer(xml_content_genre).get_first("content.genre.lref/text()")
 
-            same_as = []
+        if genre_name is None or priref is None:
+            continue
 
-            for source_xml in sources_xml:
-                term_number_list = source_xml.xpath("source.number/text()")
-                if not term_number_list:
-                    # sometimes a source is provided but the term_number field is just empty e.g. 8072.xml
-                    continue
-                term_number = term_number_list[0]
-                if "http://d-nb.info/gnd/" in term_number:
-                    same_as.append(
-                        efi.GNDResource(
-                            id=term_number.split("/")[-1],
-                        )
-                    )
-
-            genre = efi.Genre(has_name=genre_name, same_as=same_as)
-            genres.append(genre)
-
-    except Exception as e:
-        # when type not provided
-        raise Exception("Problem with Content_Genre:", e)
+        genre = efi.Genre(
+            has_name=genre_name,
+            same_as=get_same_as_for_priref(
+                priref,
+                thesau_provider,
+                include_gnd=True,
+            ),
+        )
+        genres.append(genre)
 
     return genres

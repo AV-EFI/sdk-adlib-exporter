@@ -1,10 +1,13 @@
+from builder.base.utils import get_mapped_enum_value
 from mappings.work_variant_type_enum_mapping import work_variant_type_enum_mapping
 
 
-def compute_type(self):
-    worklevel_type = self.xml.xpath("work.description_type/value[@lang='3']/text()")[0]
+def compute_type(record):
+    work_description_type = record.xml.get_first(
+        "work.description_type/value[@lang='3']/text()"
+    )
 
-    if worklevel_type not in work_variant_type_enum_mapping:
-        raise Exception("No mapping found for key:", worklevel_type)
+    if work_description_type is None:
+        return None
 
-    return work_variant_type_enum_mapping.get(worklevel_type)
+    return get_mapped_enum_value(work_variant_type_enum_mapping, work_description_type)

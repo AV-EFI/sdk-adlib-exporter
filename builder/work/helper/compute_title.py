@@ -1,68 +1,54 @@
-# note alternative title selection for works without titles or missing mapping
-
 from avefi_schema import model as efi
 
+from builder.base.base_builder import BaseBuilder, XMLContainer
+from builder.base.utils import get_mapped_enum_value
 from mappings.title_type_enum_mapping import title_type_enum_mapping
 
 
-def compute_has_alternative_title(self):
-    _, alternative_titles = compute_title(self)
-    return alternative_titles
+def compute_has_alternative_title(record: BaseBuilder):
+    return compute_title(record)[1:]
 
 
-def compute_has_primary_title(self):
-    primary_title, _ = compute_title(self)
-    return primary_title
+def compute_has_primary_title(record: BaseBuilder):
+    return compute_title(record)[0]
 
 
-def compute_title(self):
+def compute_title(record: BaseBuilder):
 
-    xml_titles = self.xml.xpath("Title")
+    xml_titles = record.xml.get_all("Title")
     titles = []
 
     for xml_title in xml_titles:
-        title_text = xml_title.xpath("title/text()")
-        title_type = xml_title.xpath("title.type/value[@lang='de-DE']/text()")
-        title_article = xml_title.xpath("title.article/text()")
 
-        if not title_text:
+        title_text = XMLContainer(xml_title).get_first("title/text()")
+        title_type = XMLContainer(xml_title).get_first(
+            "title.type/value[@lang='de-DE']/text()"
+        )
+        title_article = XMLContainer(xml_title).get_first("title.article/text()")
+
+        if title_text is None:
             continue
 
-        full_title_text = title_text[0]
         ordering_title_text = None
+        new_title_text = title_text
 
-        # if article present build combined title
-        if title_article:
-            full_title_text = title_article[0] + " " + title_text[0]
-            ordering_title_text = title_text[0] + ", " + title_article[0]
+        if title_article is not None:
+            new_title_text = f"{title_article} {title_text}"
+            ordering_title_text = f"{title_text}, {title_article}"
 
-        if not title_type:
-            titles.append(
-                efi.Title(
-                    has_name=full_title_text,
-                    type=efi.TitleTypeEnum.AlternativeTitle,
-                    has_ordering_name=ordering_title_text,
-                )
+        new_title_type = efi.TitleTypeEnum.AlternativeTitle
+
+        if title_type is not None:
+            title_type_mapped = get_mapped_enum_value(
+                title_type_enum_mapping, title_type
             )
-            continue
-
-        if title_type[0] not in title_type_enum_mapping:
-            raise Exception("No mapping found for key:", title_type[0])
-
-        if title_type_enum_mapping[title_type[0]] is None:
-            titles.append(
-                efi.Title(
-                    has_name=full_title_text,
-                    type=efi.TitleTypeEnum.AlternativeTitle,
-                    has_ordering_name=ordering_title_text,
-                )
-            )
-            continue
+            if title_type_mapped is not None:
+                new_title_type = title_type_mapped
 
         titles.append(
             efi.Title(
-                has_name=full_title_text,
-                type=title_type_enum_mapping.get(title_type[0]),
+                has_name=new_title_text,
+                type=new_title_type,
                 has_ordering_name=ordering_title_text,
             )
         )
@@ -76,4 +62,4 @@ def compute_title(self):
 
     titles.sort(key=lambda x: title_sort(x))
 
-    return titles[0], titles[1:]
+    return titles

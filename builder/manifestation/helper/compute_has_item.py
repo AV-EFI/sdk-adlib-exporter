@@ -1,7 +1,9 @@
 from avefi_schema import model as efi
 
+from builder.base.base_builder import BaseBuilder
 
-def compute_has_item(self):
-    parts_list = self.xml.xpath("Parts/parts.reference.lref/text()")
 
-    return [efi.LocalResource(id=priref) for priref in parts_list]
+def compute_has_item(record: BaseBuilder):
+    prirefs = record.xml.get_all("Parts/parts.reference.lref/text()")
+
+    return [efi.LocalResource(id=priref) for priref in prirefs]

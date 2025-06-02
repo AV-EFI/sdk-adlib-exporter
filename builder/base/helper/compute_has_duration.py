@@ -1,35 +1,30 @@
 from avefi_schema import model as efi
 
+from builder.base.base_builder import BaseBuilder
+from builder.base.utils import get_mapped_enum_value
 from mappings.precision_enum_mapping import precision_enum_mapping
 
 
-def compute_has_duration(self):
-    dimensions = self.xml.xpath(
-        "Dimension[dimension.type/value[@lang='de-DE' and text()='Laufzeit']]"
+def compute_has_duration(record: BaseBuilder):
+
+    value = record.xml.get_first(
+        "Dimension[dimension.type/value[@lang='de-DE' and text()='Laufzeit']][1]/dimension.value/text()"
     )
 
-    if not dimensions:
+    precision = record.xml.get_first(
+        "Dimension[dimension.type/value[@lang='de-DE' and text()='Laufzeit']][1]/dimension.precision/value[@lang='3']/text()"
+    )
+
+    if not value:
         return None
-
-    # I found two occurences of more than one laufzeit dimension 150238552, 150234901
-    dimension_xml = dimensions[0]
-
-    value_xml = dimension_xml.xpath("dimension.value/text()")
-    if not value_xml:
-        # No value in Dimension object
-        return None
-
-    value = value_xml[0]
-
-    precision_xml = dimension_xml.xpath("dimension.precision/value[@lang='3']/text()")
-    precision = precision_xml[0] if precision_xml else None
-
-    if precision is not None and precision not in precision_enum_mapping:
-        raise Exception("No mapping found for key:", precision)
 
     return efi.Duration(
         has_value=time_string_to_iso_8601_duration(value),
-        has_precision=precision_enum_mapping.get(precision),
+        has_precision=(
+            get_mapped_enum_value(precision_enum_mapping, precision)
+            if precision is not None
+            else None
+        ),
     )
 
 

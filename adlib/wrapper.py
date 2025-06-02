@@ -9,12 +9,12 @@ Converted for Python3
 2021
 """
 
-import re
-import sys
 import json
+import re
+
+from dicttoxml import dicttoxml
 from lxml import etree, html
 from requests import Session, exceptions
-from dicttoxml import dicttoxml
 
 
 class Database:
@@ -58,7 +58,7 @@ class Database:
                 params[i] = self.default_parameters[i]
 
         try:
-            response = self.session.get(self.url, params=params, timeout=60)
+            response = self.session.get(self.url, params=params, timeout=500)
         except exceptions.Timeout:
             raise
 

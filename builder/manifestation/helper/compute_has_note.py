@@ -1,11 +1,11 @@
-# currently only retrieving german notes, to change remove "[@lang='de-DE']"
-
 from avefi_schema import model as efi
 
+from builder.base.base_builder import BaseBuilder
 
-def compute_has_note(self):
-    notes_list = self.xml.xpath(
+
+def compute_has_note(record: BaseBuilder):
+    notes = record.xml.get_all(
         "Content_description/content.description/value[@lang='de-DE']/text()"
     )
 
-    return [efi.TextArea(note) for note in notes_list]
+    return [efi.TextArea(note) for note in notes]

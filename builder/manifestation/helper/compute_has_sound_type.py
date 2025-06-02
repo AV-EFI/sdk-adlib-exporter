@@ -1,15 +1,12 @@
+from builder.base.base_builder import BaseBuilder
+from builder.base.utils import get_mapped_enum_value
 from mappings.sound_type_enum_mapping import sound_type_enum_mapping
 
 
-def compute_has_sound_type(self):
-    sound_list = self.xml.xpath("sound_manifestation/value[@lang='3']/text()")
+def compute_has_sound_type(record: BaseBuilder):
+    sound = record.xml.get_first("sound_manifestation/value[@lang='3']/text()")
 
-    if not sound_list:
+    if sound is None:
         return None
 
-    sound = sound_list[0]
-
-    if sound not in sound_type_enum_mapping:
-        raise Exception("No mapping found for key:", sound)
-
-    return sound_type_enum_mapping[sound]
+    return get_mapped_enum_value(sound_type_enum_mapping, sound)

@@ -1,6 +1,7 @@
 import logging
 import os
 import tempfile
+from datetime import datetime
 
 from linkml_runtime.dumpers import JSONDumper
 
@@ -94,7 +95,10 @@ def main():
     logging.info(f"# Built {len(records)} records")
 
     # Create a temporary file for the JSON output.
-    file_obj, json_file = tempfile.mkstemp(suffix=".json")
+    file_obj, json_file = tempfile.mkstemp(
+        prefix=datetime.now().strftime("%Y%m%d-%H%M%S-"),
+        suffix=".json",
+    )
     os.close(file_obj)
 
     # Write the records to a JSON file using the JSONDumper.

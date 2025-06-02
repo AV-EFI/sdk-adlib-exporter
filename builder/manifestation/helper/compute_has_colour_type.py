@@ -1,15 +1,12 @@
+from builder.base.base_builder import BaseBuilder
+from builder.base.utils import get_mapped_enum_value
 from mappings.colour_type_enum_mapping import colour_type_enum_mapping
 
 
-def compute_has_colour_type(self):
-    colour_list = self.xml.xpath("colour_manifestation/value[@lang='3']/text()")
+def compute_has_colour_type(record: BaseBuilder):
+    colour = record.xml.get_first("colour_manifestation/value[@lang='3']/text()")
 
-    if not colour_list:
+    if colour is None:
         return None
 
-    colour = colour_list[0]
-
-    if colour not in colour_type_enum_mapping:
-        raise Exception("No mapping found for key:", colour)
-
-    return colour_type_enum_mapping[colour]
+    return get_mapped_enum_value(colour_type_enum_mapping, colour)
