@@ -6,10 +6,10 @@ from datetime import datetime
 from linkml_runtime.dumpers import JSONDumper
 
 from adlib import collect_provider, pointer_file_provider
-from builder.base.custom_errors import UnresolvableReferenceError
-from builder.item.item_builder import ItemBuilder
-from builder.manifestation.manifestation_builder import ManifestationBuilder
-from builder.work.work_builder import WorkBuilder
+from records.base.custom_errors import UnresolvableReferenceError
+from records.item.item_record import ItemRecord
+from records.manifestation.manifestation_record import ManifestationRecord
+from records.work.work_record import WorkRecord
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -27,16 +27,6 @@ logger.addHandler(error_logs_handler)
 
 
 class RecordCategory:
-    """
-    A class to manage records of a specific type (e.g., works, manifestations, items).
-
-    Attributes:
-        builder (class): The builder class used to process the XML data into structured records.
-        initial_prirefs (list): A list of prirefs retrieved from the pointer file.
-        final_prirefs (list): A list of processed record prirefs after record building.
-        records (list): A list to store the processed records.
-    """
-
     def __init__(self, priref, builder, name):
         xml = pointer_file_provider.get_by_priref(priref)
         self.initial_prirefs = xml.xpath("hit/text()")
@@ -47,23 +37,19 @@ class RecordCategory:
 
 
 def main():
-    """
-    Main entry point to process works, manifestations, and items into records,
-    and then write them to a JSON file.
-    """
     works = RecordCategory(
         priref=3,
-        builder=WorkBuilder,
+        builder=WorkRecord,
         name="work",
     )
     manifestations = RecordCategory(
         priref=4,
-        builder=ManifestationBuilder,
+        builder=ManifestationRecord,
         name="manifestation",
     )
     items = RecordCategory(
         priref=5,
-        builder=ItemBuilder,
+        builder=ItemRecord,
         name="item",
     )
 
@@ -109,13 +95,6 @@ def main():
 
 
 def process_records(record_category, allowed_parents):
-    """
-    Process each priref in a given RecordCategory, build records, and store them.
-
-    Args:
-        record_category (RecordCategory): The category of records to process.
-        allowed_parents (list): The list of allowed parent prirefs for handling unresolved references to non-existent records.
-    """
     # Loop over each priref in the current record category.
     for i, priref in enumerate(record_category.initial_prirefs):
         logging.info(
@@ -126,7 +105,7 @@ def process_records(record_category, allowed_parents):
             xml = collect_provider.get_by_priref(priref)
 
             # print(type(xml))
-            # Build the record using the associated builder.
+            # Build the record using the associated records.
             record = record_category.builder(xml, allowed_parents, priref).build()
 
             # record_json = JSONDumper().dumps(record)
