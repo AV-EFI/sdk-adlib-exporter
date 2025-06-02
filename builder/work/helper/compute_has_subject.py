@@ -1,7 +1,7 @@
 from avefi_schema import model as efi
 
 from adlib import thesau_provider, people_provider
-from builder.base.base_builder import XMLContainer, BaseBuilder
+from builder.base.base_builder import BaseBuilder
 from builder.base.utils import get_same_as_for_priref
 
 
@@ -13,12 +13,8 @@ def compute_has_subject(record: BaseBuilder):
 
     for xml_content_person in xml_content_persons:
 
-        person_name = XMLContainer(xml_content_person).get_first(
-            "content.person.name/value/text()"
-        )
-        priref = XMLContainer(xml_content_person).get_first(
-            "content.person.name.lref/text()"
-        )
+        person_name = xml_content_person.get_first("content.person.name/value/text()")
+        priref = xml_content_person.get_first("content.person.name.lref/text()")
 
         if person_name is None or priref is None:
             continue
@@ -47,12 +43,10 @@ def compute_has_subject(record: BaseBuilder):
 
     for xml_content_subject in xml_content_subjects:
 
-        subject_name = XMLContainer(xml_content_subject).get_first(
+        subject_name = xml_content_subject.get_first(
             "content.subject/value[@lang='de-DE']/text()"
         )
-        priref = XMLContainer(xml_content_subject).get_first(
-            "content.subject.lref/text()"
-        )
+        priref = xml_content_subject.get_first("content.subject.lref/text()")
 
         if subject_name is None or priref is None:
             continue

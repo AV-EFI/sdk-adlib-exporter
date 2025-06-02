@@ -22,4 +22,9 @@ class XMLContainer:
         return results[0] if results else None
 
     def get_all(self, xpath_expression):
-        return self.xml.xpath(xpath_expression)
+        elements = self.xml.xpath(xpath_expression)
+
+        if xpath_expression.endswith("/text()"):
+            return elements
+        else:
+            return [XMLContainer(element) for element in elements]

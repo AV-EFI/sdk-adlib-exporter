@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-from builder.base.base_builder import BaseBuilder, XMLContainer
+from builder.base.base_builder import BaseBuilder
 
 
 def compute_same_as(record: BaseBuilder):
@@ -8,10 +8,8 @@ def compute_same_as(record: BaseBuilder):
     xml_alternative_numbers = record.xml.get_all("Alternative_number")
 
     for xml_alternative_number in xml_alternative_numbers:
-        number = XMLContainer(xml_alternative_number).get_first(
-            "alternative_number/text()"
-        )
-        number_type = XMLContainer(xml_alternative_number).get_first(
+        number = xml_alternative_number.get_first("alternative_number/text()")
+        number_type = xml_alternative_number.get_first(
             "alternative_number.type/value/text()"
         )
 

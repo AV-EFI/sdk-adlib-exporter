@@ -28,11 +28,9 @@ def compute_has_event(record: BaseBuilder):
 
     for xml_cast in xml_cast_list:
 
-        name = XMLContainer(xml_cast).get_first("cast.name/value/text()")
-        priref = XMLContainer(xml_cast).get_first("cast.name.lref/text()")
-        credit_type = XMLContainer(xml_cast).get_first(
-            "cast.credit_type/value[@lang='de-DE']/text()"
-        )
+        name = xml_cast.get_first("cast.name/value/text()")
+        priref = xml_cast.get_first("cast.name.lref/text()")
+        credit_type = xml_cast.get_first("cast.credit_type/value[@lang='de-DE']/text()")
 
         # Currently only cast without type!
         if credit_type is not None:
@@ -81,8 +79,8 @@ def compute_has_event(record: BaseBuilder):
             )
 
             for xml_entity in xml_entity_list:
-                name = XMLContainer(xml_entity).get_first("credit.name/value/text()")
-                priref = XMLContainer(xml_entity).get_first("credit.name.lref/text()")
+                name = xml_entity.get_first("credit.name/value/text()")
+                priref = xml_entity.get_first("credit.name.lref/text()")
 
                 if name is None or priref is None:
                     continue
@@ -140,12 +138,10 @@ def _get_located_in(record: BaseBuilder):
     xml_productions = record.xml.get_all("Production")
 
     for xml_production in xml_productions:
-        production_country = XMLContainer(xml_production).get_first(
+        production_country = xml_production.get_first(
             "production_country/value[@lang='de-DE']/text()"
         )
-        priref = XMLContainer(xml_production).get_first(
-            "production_country.lref/text()"
-        )
+        priref = xml_production.get_first("production_country.lref/text()")
 
         if production_country is None or priref is None:
             continue

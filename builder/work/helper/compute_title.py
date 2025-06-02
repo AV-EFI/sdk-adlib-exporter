@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-from builder.base.base_builder import BaseBuilder, XMLContainer
+from builder.base.base_builder import BaseBuilder
 from builder.base.utils import get_mapped_enum_value
 from mappings.title_type_enum_mapping import title_type_enum_mapping
 
@@ -20,11 +20,9 @@ def compute_title(record: BaseBuilder):
 
     for xml_title in xml_titles:
 
-        title_text = XMLContainer(xml_title).get_first("title/text()")
-        title_type = XMLContainer(xml_title).get_first(
-            "title.type/value[@lang='de-DE']/text()"
-        )
-        title_article = XMLContainer(xml_title).get_first("title.article/text()")
+        title_text = xml_title.get_first("title/text()")
+        title_type = xml_title.get_first("title.type/value[@lang='de-DE']/text()")
+        title_article = xml_title.get_first("title.article/text()")
 
         if title_text is None:
             continue

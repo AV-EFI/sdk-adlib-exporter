@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-from builder.base.base_builder import BaseBuilder, XMLContainer
+from builder.base.base_builder import BaseBuilder
 from builder.base.utils import get_mapped_enum_value
 from mappings.language_code_enum_mapping import language_code_enum_mapping
 from mappings.language_usage_enum_mapping import language_usage_enum_mapping
@@ -14,12 +14,8 @@ def compute_in_language(record: BaseBuilder):
 
     for xml_language in xml_languages_list:
 
-        language = XMLContainer(xml_language).get_first(
-            "language/value[@lang='de-DE']/text()"
-        )
-        language_type = XMLContainer(xml_language).get_first(
-            "language.type/value[@lang='3']/text()"
-        )
+        language = xml_language.get_first("language/value[@lang='de-DE']/text()")
+        language_type = xml_language.get_first("language.type/value[@lang='3']/text()")
         if language is None or language_type is None:
             continue
 
