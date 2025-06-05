@@ -8,6 +8,7 @@ from records.base.helper.compute_has_identifier import compute_has_identifier
 from records.base.helper.compute_in_language import compute_in_language
 from records.item.helper.compute_element_type import compute_element_type
 from records.item.helper.compute_has_access_status import compute_has_access_status
+from records.item.helper.compute_has_format import compute_has_format
 from records.item.helper.compute_has_primary_title import compute_has_primary_title
 from records.item.helper.compute_has_webresource import compute_has_webresource
 from records.item.helper.compute_is_item_of import compute_is_item_of
@@ -24,7 +25,7 @@ class ItemRecord(BaseRecord):
             is_item_of=compute_is_item_of(self),
             has_duration=compute_has_duration(self),
             has_extent=compute_has_extent(self),
-            has_format=None,  # Todo
+            has_format=compute_has_format(self),
             has_note=None,  # will not be implemented
             has_webresource=compute_has_webresource(self),
             described_by=compute_described_by(self),

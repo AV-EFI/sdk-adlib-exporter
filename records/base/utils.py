@@ -66,8 +66,10 @@ def get_same_as_for_priref(
         raise Exception("Problem with same_as computation:", e)
 
 
-def get_mapped_enum_value(enum_map, key):
+def get_mapped_enum_value(enum_map, key, name=None):
     if key not in enum_map:
-        raise Exception("No mapping found for key:", key)
+        raise Exception(
+            f"No mapping found for key: '{key}'{f' in {name}' if name else ''}"
+        )
 
     return enum_map[key]
