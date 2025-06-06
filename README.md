@@ -1,6 +1,4 @@
-# av-efi-generator
-
-script for generating av-efi compliant records from adlib records provided by hard-coded pointer files
+# sdk-axiell-collections-exporter
 
 ## Installation
 
@@ -12,11 +10,11 @@ $ poetry install                       # install dependencies
 
 ## Running the project
 
-Ensure that you have a network connection to adlib.
+Ensure that you have a network connection to Axiell Collections.
 
 ```console
-$ export SDK_ADLIB_URL=http://...      # set required env variable
-$ echo $SDK_ADLIB_URL                  # check env variable
+$ export SDK_AXIELL_COLLECTIONS_URL=http://...      # set required env variable
+$ echo $SDK_AXIELL_COLLECTIONS_URL                  # check env variable
 http://...
 $ poetry run python main.py            # run script
 ```

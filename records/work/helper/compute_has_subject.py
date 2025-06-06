@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-from adlib import thesau_provider, people_provider
+from axiell_collections import thesau_provider, people_provider
 from records.base.base_record import BaseRecord
 from records.base.utils import get_same_as_for_priref
 

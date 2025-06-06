@@ -8,4 +8,4 @@ __pycache__/
 .idea
 
 #cache
-/adlib_cache.sqlite
+/axiell_collections_cache.sqlite

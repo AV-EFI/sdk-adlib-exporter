@@ -5,7 +5,7 @@ from datetime import datetime
 
 from linkml_runtime.dumpers import JSONDumper
 
-from adlib import collect_provider, pointer_file_provider
+from axiell_collections import collect_provider, pointer_file_provider
 from records.base.custom_errors import UnresolvableReferenceError
 from records.item.item_record import ItemRecord
 from records.manifestation.manifestation_record import ManifestationRecord

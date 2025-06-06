@@ -1,7 +1,8 @@
 import json
-from adlib.wrapper import Cursor
-from adlib import adlib_database
 import logging
+
+from axiell_collections import axiell_collections_database
+from axiell_collections.wrapper import Cursor
 
 logging.getLogger("dicttoxml").setLevel(logging.WARNING)
 
@@ -10,7 +11,9 @@ logging.basicConfig(
 )
 
 FILE_PATH = "lieferung-250304-journal-1.json"
-ADLIB_DB_NAME = "collect.inf"
+AXIELL_COLLECTIONS_DB_NAME = "collect.inf"
+
+# TODO add host !
 
 
 def process_record(record, cursor):
@@ -31,7 +34,7 @@ def process_record(record, cursor):
 
         response = cursor.update_record(
             priref=local_id,
-            database=ADLIB_DB_NAME,
+            database=AXIELL_COLLECTIONS_DB_NAME,
             data=update_payload_data,
         )
 
@@ -46,7 +49,7 @@ def process_record(record, cursor):
 
 def main():
     try:
-        cursor = Cursor(adlib_database)
+        cursor = Cursor(axiell_collections_database)
 
         with open(FILE_PATH, "r", encoding="utf-8") as f:
             records = json.load(f)

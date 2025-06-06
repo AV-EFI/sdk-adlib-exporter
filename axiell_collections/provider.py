@@ -2,8 +2,8 @@ from abc import abstractmethod, ABC
 
 
 class BaseProvider(ABC):
-    def __init__(self, adlib, database):
-        self.adlib = adlib
+    def __init__(self, axiell_collections, database):
+        self.axiell_collections = axiell_collections
         self.database = database
 
     def get_by_priref(self, priref):
@@ -14,7 +14,7 @@ class BaseProvider(ABC):
 
     def _execute_query(self, query):
         try:
-            return self.adlib.get(query).records[0]
+            return self.axiell_collections.get(query).records[0]
         except Exception as e:
             print(f"An error occurred during the request: {e}")
             return None

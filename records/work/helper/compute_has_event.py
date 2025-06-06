@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-from adlib import people_provider, thesau_provider
+from axiell_collections import people_provider, thesau_provider
 from mappings.agent_type_enum import agent_type_enum
 from mappings.cinematography_activity_type_enum import cinematography_activity_type_enum
 from mappings.directing_activity_type_enum import directing_activity_type_enum
@@ -168,4 +168,9 @@ def _get_type_for_priref(priref, provider):
     if record_type is None:
         return efi.AgentTypeEnum.Person
 
-    return get_mapped_enum_value(agent_type_enum, record_type)
+    agent_type = get_mapped_enum_value(agent_type_enum, record_type)
+
+    if agent_type is None:
+        return efi.AgentTypeEnum.Person
+
+    return agent_type
