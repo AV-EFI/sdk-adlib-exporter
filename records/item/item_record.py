@@ -9,6 +9,7 @@ from records.base.helper.compute_in_language import compute_in_language
 from records.item.helper.compute_element_type import compute_element_type
 from records.item.helper.compute_has_access_status import compute_has_access_status
 from records.item.helper.compute_has_format import compute_has_format
+from records.item.helper.compute_has_frame_rate import compute_has_frame_rate
 from records.item.helper.compute_has_primary_title import compute_has_primary_title
 from records.item.helper.compute_has_webresource import compute_has_webresource
 from records.item.helper.compute_is_item_of import compute_is_item_of
@@ -34,4 +35,5 @@ class ItemRecord(BaseRecord):
             in_language=compute_in_language(self),
             has_alternative_title=None,
             has_primary_title=compute_has_primary_title(self),
+            has_frame_rate=compute_has_frame_rate(self),
         )
