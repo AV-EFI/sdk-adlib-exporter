@@ -1,4 +1,4 @@
-from mappings.work_variant_type_enum_mapping import work_variant_type_enum_mapping
+from mappings.work_variant_type_enum import work_variant_type_enum
 from records.base.utils import get_mapped_enum_value
 
 
@@ -10,4 +10,4 @@ def compute_type(record):
     if work_description_type is None:
         return None
 
-    return get_mapped_enum_value(work_variant_type_enum_mapping, work_description_type)
+    return get_mapped_enum_value(work_variant_type_enum, work_description_type)

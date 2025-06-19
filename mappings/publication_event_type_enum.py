@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-publication_event_type_enum_mapping = {
+publication_event_type_enum = {
     "Fernsehausstrahlung": efi.PublicationEventTypeEnum.BroadcastEvent,
     "Heimkino": efi.PublicationEventTypeEnum.HomeVideoPublicationEvent,
     "Nicht-Kino-Distribution": efi.PublicationEventTypeEnum.NonTheatricalDistributionEvent,

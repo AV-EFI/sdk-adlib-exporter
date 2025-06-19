@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-from mappings.unit_enum_mapping import unit_enum_mapping
+from mappings.unit_enum import unit_enum
 from records.base.base_record import BaseRecord
 from records.base.utils import get_mapped_enum_value
 
@@ -30,7 +30,7 @@ def get_dimension_extent(record: BaseRecord):
     if unit is None or value is None:
         return None
 
-    unit_mapped = get_mapped_enum_value(unit_enum_mapping, unit)
+    unit_mapped = get_mapped_enum_value(unit_enum, unit)
 
     if unit_mapped is None:
         return None

@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-from mappings.precision_enum_mapping import precision_enum_mapping
+from mappings.precision_enum import precision_enum
 from records.base.base_record import BaseRecord
 from records.base.utils import get_mapped_enum_value
 
@@ -21,7 +21,7 @@ def compute_has_duration(record: BaseRecord):
     return efi.Duration(
         has_value=time_string_to_iso_8601_duration(value),
         has_precision=(
-            get_mapped_enum_value(precision_enum_mapping, precision)
+            get_mapped_enum_value(precision_enum, precision)
             if precision is not None
             else None
         ),

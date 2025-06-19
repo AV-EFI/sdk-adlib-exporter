@@ -1,4 +1,4 @@
-from mappings.colour_type_enum_mapping import colour_type_enum_mapping
+from mappings.colour_type_enum import colour_type_enum
 from records.base.base_record import BaseRecord
 from records.base.utils import get_mapped_enum_value
 
@@ -9,4 +9,4 @@ def compute_has_colour_type(record: BaseRecord):
     if colour is None:
         return None
 
-    return get_mapped_enum_value(colour_type_enum_mapping, colour)
+    return get_mapped_enum_value(colour_type_enum, colour)

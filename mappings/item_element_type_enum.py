@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-item_element_type_enum_mapping = {
+item_element_type_enum = {
     "Dupnegativ": efi.ItemElementTypeEnum.DuplicateNegative,
     "Duppositiv": efi.ItemElementTypeEnum.DuplicatePositive,
     "Bildnegativ": efi.ItemElementTypeEnum.ImageNegative,

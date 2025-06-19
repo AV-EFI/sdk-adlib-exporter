@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-title_type_enum_mapping = {
+title_type_enum = {
     "Alternativtitel": efi.TitleTypeEnum.AlternativeTitle,
     "Originaltitel": efi.TitleTypeEnum.PreferredTitle,
     "Recherchehilfe": efi.TitleTypeEnum.SearchTitle,

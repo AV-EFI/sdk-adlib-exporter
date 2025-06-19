@@ -1,4 +1,4 @@
-from mappings.item_element_type_enum_mapping import item_element_type_enum_mapping
+from mappings.item_element_type_enum import item_element_type_enum
 from records.base.base_record import BaseRecord
 from records.base.utils import get_mapped_enum_value
 
@@ -11,4 +11,4 @@ def compute_element_type(record: BaseRecord):
     if element_type is None:
         return None
 
-    return get_mapped_enum_value(item_element_type_enum_mapping, element_type)
+    return get_mapped_enum_value(item_element_type_enum, element_type)

@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-work_form_enum_mapping = {
+work_form_enum = {
     "Amateurfilm": efi.WorkFormEnum.AmateurFilm,
     "Kompilationsfilm": efi.WorkFormEnum.Compilation,
     "Home movie": efi.WorkFormEnum.HomeMovie,

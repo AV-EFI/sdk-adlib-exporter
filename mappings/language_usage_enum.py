@@ -1,6 +1,6 @@
 from avefi_schema import model as efi
 
-language_usage_enum_mapping = {
+language_usage_enum = {
     "Zwischentitel": efi.LanguageUsageEnum.Intertitles,
     "Synchronfassung": efi.LanguageUsageEnum.Dubbed,
     "Dialog": efi.LanguageUsageEnum.SpokenLanguage,
