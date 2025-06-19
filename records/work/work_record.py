@@ -30,7 +30,6 @@ class WorkRecord(BaseRecord):
             variant_type=None,
             described_by=compute_described_by(self),
             has_event=compute_has_event(self),
-            in_language=None,
             has_alternative_title=compute_has_alternative_title(self),
             has_primary_title=compute_has_primary_title(self),
             has_identifier=compute_has_identifier(self),
