@@ -12,6 +12,7 @@ from records.item.helper.compute_has_colour_type import compute_has_colour_type
 from records.item.helper.compute_has_format import compute_has_format
 from records.item.helper.compute_has_frame_rate import compute_has_frame_rate
 from records.item.helper.compute_has_primary_title import compute_has_primary_title
+from records.item.helper.compute_has_sound_type import compute_has_sound_type
 from records.item.helper.compute_has_webresource import compute_has_webresource
 from records.item.helper.compute_is_item_of import compute_is_item_of
 
@@ -38,4 +39,5 @@ class ItemRecord(BaseRecord):
             has_primary_title=compute_has_primary_title(self),
             has_frame_rate=compute_has_frame_rate(self),
             has_colour_type=compute_has_colour_type(self),
+            has_sound_type=compute_has_sound_type(self),
         )
