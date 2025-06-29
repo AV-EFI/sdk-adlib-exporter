@@ -1,18 +1,19 @@
 from avefi_schema import model as efi
 
+from mappings.colour_type_enum import colour_type_enum
+from mappings.frame_rate_enum import frame_rate_enum
+from mappings.item_access_status_enum import item_access_status_enum
+from mappings.item_element_type_enum import item_element_type_enum
+from mappings.sound_type_enum import sound_type_enum
 from records.base.base_record import BaseRecord
 from records.base.helper.compute_described_by import compute_described_by
 from records.base.helper.compute_has_duration import compute_has_duration
 from records.base.helper.compute_has_extent import compute_has_extent
 from records.base.helper.compute_has_identifier import compute_has_identifier
 from records.base.helper.compute_in_language import compute_in_language
-from records.item.helper.compute_element_type import compute_element_type
-from records.item.helper.compute_has_access_status import compute_has_access_status
-from records.item.helper.compute_has_colour_type import compute_has_colour_type
+from records.base.utils import simple_remap
 from records.item.helper.compute_has_format import compute_has_format
-from records.item.helper.compute_has_frame_rate import compute_has_frame_rate
 from records.item.helper.compute_has_primary_title import compute_has_primary_title
-from records.item.helper.compute_has_sound_type import compute_has_sound_type
 from records.item.helper.compute_has_webresource import compute_has_webresource
 from records.item.helper.compute_is_item_of import compute_is_item_of
 
@@ -21,8 +22,6 @@ class ItemRecord(BaseRecord):
 
     def build(self):
         return efi.Item(
-            element_type=compute_element_type(self),
-            has_access_status=compute_has_access_status(self),
             is_copy_of=None,  # will not be implemented
             is_derivative_of=None,  # will not be implemented
             is_item_of=compute_is_item_of(self),
@@ -37,7 +36,29 @@ class ItemRecord(BaseRecord):
             in_language=compute_in_language(self),
             has_alternative_title=None,
             has_primary_title=compute_has_primary_title(self),
-            has_frame_rate=compute_has_frame_rate(self),
-            has_colour_type=compute_has_colour_type(self),
-            has_sound_type=compute_has_sound_type(self),
+            element_type=simple_remap(
+                self,
+                "mat_characteristics/mat_characteristics.material_type_film/value[@lang='de-DE']/text()",
+                item_element_type_enum,
+            ),
+            has_access_status=simple_remap(
+                self,
+                "copy_status/value[@lang='3']/text()",
+                item_access_status_enum,
+            ),
+            has_frame_rate=simple_remap(
+                self,
+                "Film_speed/frame_rate/value[@lang='de-DE']/text()",
+                frame_rate_enum,
+            ),
+            has_colour_type=simple_remap(
+                self,
+                "colour_type/value[@lang='3']/text()",
+                colour_type_enum,
+            ),
+            has_sound_type=simple_remap(
+                self,
+                "sound_item/value[@lang='de-DE']/text()",
+                sound_type_enum,
+            ),
         )

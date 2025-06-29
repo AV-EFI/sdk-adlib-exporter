@@ -2,6 +2,8 @@ import re
 
 from avefi_schema import model as efi
 
+from records.base.base_record import BaseRecord
+
 
 def get_formatted_date(date_start, date_start_prec, date_end, date_end_prec):
     production_date_start_value = date_start + ("~" if date_start_prec else "")
@@ -73,3 +75,10 @@ def get_mapped_enum_value(enum_map, key, name=None):
         )
 
     return enum_map[key]
+
+
+def simple_remap(record: BaseRecord, xpath, enum_map):
+    value = record.xml.get_first(xpath)
+    if value is None:
+        return None
+    return get_mapped_enum_value(enum_map, value)
