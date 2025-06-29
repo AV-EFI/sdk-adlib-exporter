@@ -2,9 +2,8 @@ from abc import ABC, abstractmethod
 
 
 class BaseRecord(ABC):
-    def __init__(self, xml, allowed_parents, priref):
+    def __init__(self, xml, priref):
         self.xml: XMLContainer = XMLContainer(xml)
-        self.allowed_parents = allowed_parents
         self.priref = priref
 
     @abstractmethod
