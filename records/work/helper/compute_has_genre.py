@@ -1,12 +1,12 @@
 from avefi_schema import model as efi
 
 from axiell_collections import thesau_provider
-from records.base.base_record import BaseRecord
+from records.base.base_record import XMLAccessor
 from records.base.utils import get_same_as_for_priref
 
 
-def compute_has_genre(record: BaseRecord):
-    xml_content_genres = record.xml.get_all("Content_genre")
+def compute_has_genre(xml: XMLAccessor):
+    xml_content_genres = xml.get_all("Content_genre")
 
     genres = []
 

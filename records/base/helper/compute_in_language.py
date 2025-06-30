@@ -2,13 +2,13 @@ from avefi_schema import model as efi
 
 from mappings.language_code_enum import language_code_enum
 from mappings.language_usage_enum import language_usage_enum
-from records.base.base_record import BaseRecord
+from records.base.base_record import XMLAccessor
 from records.base.utils import get_mapped_enum_value
 
 
-def compute_in_language(record: BaseRecord):
+def compute_in_language(xml: XMLAccessor):
 
-    xml_languages_list = record.xml.get_all("Language")
+    xml_languages_list = xml.get_all("Language")
 
     languages = []
 

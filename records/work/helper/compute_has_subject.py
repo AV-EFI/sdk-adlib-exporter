@@ -1,13 +1,13 @@
 from avefi_schema import model as efi
 
 from axiell_collections import thesau_provider, people_provider
-from records.base.base_record import BaseRecord
+from records.base.base_record import XMLAccessor
 from records.base.utils import get_same_as_for_priref
 
 
-def compute_has_subject(record: BaseRecord):
+def compute_has_subject(xml: XMLAccessor):
     # Agent (Person) handling
-    xml_content_persons = record.xml.get_all("Content_person")
+    xml_content_persons = xml.get_all("Content_person")
 
     persons = []
 
@@ -36,7 +36,7 @@ def compute_has_subject(record: BaseRecord):
 
     # Subject and GeographicName handling
 
-    xml_content_subjects = record.xml.get_all("Content_subject")
+    xml_content_subjects = xml.get_all("Content_subject")
 
     subjects = []
     geographic_names = []

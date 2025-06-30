@@ -1,17 +1,17 @@
 from avefi_schema import model as efi
 
 from mappings.precision_enum import precision_enum
-from records.base.base_record import BaseRecord
+from records.base.base_record import XMLAccessor
 from records.base.utils import get_mapped_enum_value
 
 
-def compute_has_duration(record: BaseRecord):
+def compute_has_duration(xml: XMLAccessor):
 
-    value = record.xml.get_first(
+    value = xml.get_first(
         "Dimension[dimension.type/value[@lang='de-DE' and text()='Laufzeit']][1]/dimension.value/text()"
     )
 
-    precision = record.xml.get_first(
+    precision = xml.get_first(
         "Dimension[dimension.type/value[@lang='de-DE' and text()='Laufzeit']][1]/dimension.precision/value[@lang='3']/text()"
     )
 

@@ -11,7 +11,7 @@ from mappings.production_design_activity_type_enum import (
     production_design_activity_type_enum,
 )
 from mappings.writing_activity_type_enum import writing_activity_type_enum
-from records.base.base_record import XMLContainer, BaseRecord
+from records.base.base_record import XMLAccessor
 from records.base.utils import (
     get_formatted_date,
     get_same_as_for_priref,
@@ -19,12 +19,12 @@ from records.base.utils import (
 )
 
 
-def compute_has_event(record: BaseRecord):
+def compute_has_event(xml: XMLAccessor):
     activities = []
 
     cast_members = []
 
-    xml_cast_list = record.xml.get_all("Cast")
+    xml_cast_list = xml.get_all("Cast")
 
     for xml_cast in xml_cast_list:
 
@@ -74,7 +74,7 @@ def compute_has_event(record: BaseRecord):
 
     for activity, activity_type_enum in activity_to_type_mapping:
         for activity_type_name in activity_type_enum.keys():
-            xml_entity_list = record.xml.get_all(
+            xml_entity_list = xml.get_all(
                 f"Credits[credit.type/value[@lang='de-DE'][text()='{activity_type_name}']]"
             )
 
@@ -105,19 +105,19 @@ def compute_has_event(record: BaseRecord):
                 )
 
     return efi.ProductionEvent(
-        located_in=_get_located_in(record),
-        has_date=_get_has_date(record),
+        located_in=_get_located_in(xml),
+        has_date=_get_has_date(xml),
         has_activity=activities,
     )
 
 
-def _get_has_date(record: BaseRecord):
-    production_date_start = record.xml.get_first("Dating/dating.date.start/text()")
-    production_date_start_prec = record.xml.get_first(
+def _get_has_date(xml: XMLAccessor):
+    production_date_start = xml.get_first("Dating/dating.date.start/text()")
+    production_date_start_prec = xml.get_first(
         "Dating/dating.date.start.prec/value[@lang='3'][text()='circa']/text()"
     )
-    production_date_end = record.xml.get_first("Dating/dating.date.end/text()")
-    production_date_end_prec = record.xml.get_first(
+    production_date_end = xml.get_first("Dating/dating.date.end/text()")
+    production_date_end_prec = xml.get_first(
         "Dating/dating.date.end.prec/value[@lang='3'][text()='circa']/text()"
     )
 
@@ -132,10 +132,10 @@ def _get_has_date(record: BaseRecord):
     )
 
 
-def _get_located_in(record: BaseRecord):
+def _get_located_in(xml: XMLAccessor):
     located_in = []
 
-    xml_productions = record.xml.get_all("Production")
+    xml_productions = xml.get_all("Production")
 
     for xml_production in xml_productions:
         production_country = xml_production.get_first(
@@ -163,7 +163,7 @@ def _get_located_in(record: BaseRecord):
 
 def _get_type_for_priref(priref, provider):
     xml = provider.get_by_priref(priref)
-    record_type = XMLContainer(xml).get_first("record_type/value[@lang='3']/text()")
+    record_type = XMLAccessor(xml).get_first("record_type/value[@lang='3']/text()")
 
     if record_type is None:
         return efi.AgentTypeEnum.Person

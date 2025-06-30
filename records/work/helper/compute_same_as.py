@@ -1,11 +1,11 @@
 from avefi_schema import model as efi
 
-from records.base.base_record import BaseRecord
+from records.base.base_record import XMLAccessor
 
 
-def compute_same_as(record: BaseRecord):
+def compute_same_as(xml: XMLAccessor):
     # currently only generating "avefi:FilmportalResource"
-    xml_alternative_numbers = record.xml.get_all("Alternative_number")
+    xml_alternative_numbers = xml.get_all("Alternative_number")
 
     for xml_alternative_number in xml_alternative_numbers:
         number = xml_alternative_number.get_first("alternative_number/text()")

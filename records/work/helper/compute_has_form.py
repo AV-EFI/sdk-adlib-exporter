@@ -1,10 +1,10 @@
 from mappings.work_form_enum import work_form_enum
-from records.base.base_record import BaseRecord
+from records.base.base_record import XMLAccessor
 from records.base.utils import get_mapped_enum_value
 
 
-def compute_has_form(record: BaseRecord):
-    nfa_categories = record.xml.get_all("nfa_category/value[@lang='3']/text()")
+def compute_has_form(xml: XMLAccessor):
+    nfa_categories = xml.get_all("nfa_category/value[@lang='3']/text()")
 
     if not nfa_categories:
         return None

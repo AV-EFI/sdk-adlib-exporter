@@ -1,11 +1,11 @@
 from avefi_schema import model as efi
 
-from records.base.base_record import BaseRecord
+from records.base.base_record import XMLAccessor
 
 
-def compute_has_webresource(record: BaseRecord):
+def compute_has_webresource(xml: XMLAccessor):
     uri = (
         "https://sammlungen.deutsche-kinemathek.de/recherche/itemdetails/sdk"
-        + record.priref
+        + xml.xpath("@priref")[0]
     )
     return efi.HttpUri(uri)

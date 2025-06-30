@@ -1,21 +1,21 @@
 from avefi_schema import model as efi
 
 from mappings.title_type_enum import title_type_enum
-from records.base.base_record import BaseRecord
+from records.base.base_record import XMLAccessor
 from records.base.utils import get_mapped_enum_value
 
 
-def compute_has_alternative_title(record: BaseRecord):
-    return compute_title(record)[1:]
+def compute_has_alternative_title(xml: XMLAccessor):
+    return compute_title(xml)[1:]
 
 
-def compute_has_primary_title(record: BaseRecord):
-    return compute_title(record)[0]
+def compute_has_primary_title(xml: XMLAccessor):
+    return compute_title(xml)[0]
 
 
-def compute_title(record: BaseRecord):
+def compute_title(xml: XMLAccessor):
 
-    xml_titles = record.xml.get_all("Title")
+    xml_titles = xml.get_all("Title")
     titles = []
 
     for xml_title in xml_titles:

@@ -1,17 +1,17 @@
 from avefi_schema import model as efi
 
 from mappings.unit_enum import unit_enum
-from records.base.base_record import BaseRecord
+from records.base.base_record import XMLAccessor
 from records.base.utils import get_mapped_enum_value
 
 
-def compute_has_extent(record: BaseRecord):
-    dimension_extent = get_dimension_extent(record)
+def compute_has_extent(xml: XMLAccessor):
+    dimension_extent = get_dimension_extent(xml)
 
     if dimension_extent:
         return dimension_extent
 
-    total_filesize_extent = get_total_filesize_extent(record)
+    total_filesize_extent = get_total_filesize_extent(xml)
 
     if total_filesize_extent:
         return total_filesize_extent
@@ -19,11 +19,11 @@ def compute_has_extent(record: BaseRecord):
     return None
 
 
-def get_dimension_extent(record: BaseRecord):
-    unit = record.xml.get_first(
+def get_dimension_extent(xml: XMLAccessor):
+    unit = xml.get_first(
         "Dimension[dimension.type/value[@lang='de-DE' and text()='Länge']]/dimension.unit/value/text()"
     )
-    value = record.xml.get_first(
+    value = xml.get_first(
         "Dimension[dimension.type/value[@lang='de-DE' and text()='Länge']]/dimension.value/text()"
     )
 
@@ -42,8 +42,8 @@ def get_dimension_extent(record: BaseRecord):
     )
 
 
-def get_total_filesize_extent(record: BaseRecord):
-    total_filesize = record.xml.get_first("total_filesize/text()")
+def get_total_filesize_extent(xml: XMLAccessor):
+    total_filesize = xml.get_first("total_filesize/text()")
 
     if total_filesize is None:
         return None
