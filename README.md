@@ -1,4 +1,4 @@
-# sdk-axiell-collections-exporter
+# collections2efi
 
 ## Installation
 
