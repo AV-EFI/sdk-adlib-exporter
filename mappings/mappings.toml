@@ -1,4 +1,4 @@
-# This file maps axiell collection values to avefi enum valueså
+# This file maps axiell collection values to avefi enum values
 
 # [<avefi_enum>]
 # <collections_value> = <avefi_enum_value>
