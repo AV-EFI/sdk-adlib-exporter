@@ -1,7 +1,9 @@
+import logging
 import re
 
 from avefi_schema import model as efi
 
+from mappings.loader import get_mapping
 from records.base.base_record import XMLAccessor
 
 
@@ -68,17 +70,18 @@ def get_same_as_for_priref(
         raise Exception("Problem with same_as computation:", e)
 
 
-def get_mapped_enum_value(enum_map, key, name=None):
-    if key not in enum_map:
-        raise Exception(
-            f"No mapping found for key: '{key}'{f' in {name}' if name else ''}"
-        )
+def get_mapped_enum_value(enum_name, key):
+    enum = get_mapping(enum_name)
 
-    return enum_map[key]
+    if key not in enum:
+        logging.warning(f"No mapping found for key: '{key}' in {enum_name}")
+        return None
+
+    return enum[key]
 
 
-def simple_remap(xml: XMLAccessor, xpath, enum_map):
+def simple_remap(xml: XMLAccessor, xpath, enum_name):
     value = xml.get_first(xpath)
     if value is None:
         return None
-    return get_mapped_enum_value(enum_map, value)
+    return get_mapped_enum_value(enum_name, value)

@@ -1,6 +1,5 @@
 from avefi_schema import model as efi
 
-from mappings.work_variant_type_enum import work_variant_type_enum
 from records.base.base_record import BaseRecord
 from records.base.helper.compute_described_by import compute_described_by
 from records.base.helper.compute_has_identifier import compute_has_identifier
@@ -36,6 +35,6 @@ class WorkRecord(BaseRecord):
             type=simple_remap(
                 self.xml,
                 "work.description_type/value[@lang='3']/text()",
-                work_variant_type_enum,
+                "WorkVariantTypeEnum",
             ),
         )

@@ -1,6 +1,5 @@
 from avefi_schema import model as efi
 
-from mappings.title_type_enum import title_type_enum
 from records.base.base_record import XMLAccessor
 from records.base.utils import get_mapped_enum_value
 
@@ -37,7 +36,7 @@ def compute_title(xml: XMLAccessor):
         new_title_type = efi.TitleTypeEnum.AlternativeTitle
 
         if title_type is not None:
-            title_type_mapped = get_mapped_enum_value(title_type_enum, title_type)
+            title_type_mapped = get_mapped_enum_value("TitleTypeEnum", title_type)
             if title_type_mapped is not None:
                 new_title_type = title_type_mapped
 

@@ -1,6 +1,5 @@
 from avefi_schema import model as efi
 
-from mappings.unit_enum import unit_enum
 from records.base.base_record import XMLAccessor
 from records.base.utils import get_mapped_enum_value
 
@@ -30,7 +29,7 @@ def get_dimension_extent(xml: XMLAccessor):
     if unit is None or value is None:
         return None
 
-    unit_mapped = get_mapped_enum_value(unit_enum, unit)
+    unit_mapped = get_mapped_enum_value("UnitEnum", unit)
 
     if unit_mapped is None:
         return None

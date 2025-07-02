@@ -1,10 +1,5 @@
 from avefi_schema import model as efi
 
-from mappings.colour_type_enum import colour_type_enum
-from mappings.frame_rate_enum import frame_rate_enum
-from mappings.item_access_status_enum import item_access_status_enum
-from mappings.item_element_type_enum import item_element_type_enum
-from mappings.sound_type_enum import sound_type_enum
 from records.base.base_record import BaseRecord
 from records.base.helper.compute_described_by import compute_described_by
 from records.base.helper.compute_has_duration import compute_has_duration
@@ -39,26 +34,26 @@ class ItemRecord(BaseRecord):
             element_type=simple_remap(
                 self.xml,
                 "mat_characteristics/mat_characteristics.material_type_film/value[@lang='de-DE']/text()",
-                item_element_type_enum,
+                "ItemElementTypeEnum",
             ),
             has_access_status=simple_remap(
                 self.xml,
                 "copy_status/value[@lang='3']/text()",
-                item_access_status_enum,
+                "ItemAccessStatusEnum",
             ),
             has_frame_rate=simple_remap(
                 self.xml,
                 "Film_speed/frame_rate/value[@lang='de-DE']/text()",
-                frame_rate_enum,
+                "FrameRateEnum",
             ),
             has_colour_type=simple_remap(
                 self.xml,
                 "colour_type/value[@lang='3']/text()",
-                colour_type_enum,
+                "ColourTypeEnum",
             ),
             has_sound_type=simple_remap(
                 self.xml,
                 "sound_item/value[@lang='de-DE']/text()",
-                sound_type_enum,
+                "SoundTypeEnum",
             ),
         )

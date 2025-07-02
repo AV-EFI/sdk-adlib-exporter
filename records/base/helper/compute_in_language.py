@@ -1,7 +1,5 @@
 from avefi_schema import model as efi
 
-from mappings.language_code_enum import language_code_enum
-from mappings.language_usage_enum import language_usage_enum
 from records.base.base_record import XMLAccessor
 from records.base.utils import get_mapped_enum_value
 
@@ -19,8 +17,8 @@ def compute_in_language(xml: XMLAccessor):
         if language is None or language_type is None:
             continue
 
-        language_mapped = get_mapped_enum_value(language_code_enum, language)
-        language_type_mapped = get_mapped_enum_value(language_usage_enum, language_type)
+        language_mapped = get_mapped_enum_value("LanguageCodeEnum", language)
+        language_type_mapped = get_mapped_enum_value("LanguageUsageEnum", language_type)
 
         if language_mapped is None or language_type_mapped is None:
             continue

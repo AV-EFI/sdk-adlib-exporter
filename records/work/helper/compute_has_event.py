@@ -1,16 +1,7 @@
 from avefi_schema import model as efi
 
 from axiell_collections import people_provider, thesau_provider
-from mappings.agent_type_enum import agent_type_enum
-from mappings.cinematography_activity_type_enum import cinematography_activity_type_enum
-from mappings.directing_activity_type_enum import directing_activity_type_enum
-from mappings.editing_activity_type_enum import editing_activity_type_enum
-from mappings.music_activity_type_enum import music_activity_type_enum
-from mappings.producing_activity_type_enum import producing_activity_type_enum
-from mappings.production_design_activity_type_enum import (
-    production_design_activity_type_enum,
-)
-from mappings.writing_activity_type_enum import writing_activity_type_enum
+from mappings.loader import get_mapping
 from records.base.base_record import XMLAccessor
 from records.base.utils import (
     get_formatted_date,
@@ -63,13 +54,13 @@ def compute_has_event(xml: XMLAccessor):
         )
 
     activity_to_type_mapping = [
-        (efi.DirectingActivity, directing_activity_type_enum),
-        (efi.CinematographyActivity, cinematography_activity_type_enum),
-        (efi.EditingActivity, editing_activity_type_enum),
-        (efi.WritingActivity, writing_activity_type_enum),
-        (efi.ProductionDesignActivity, production_design_activity_type_enum),
-        (efi.ProducingActivity, producing_activity_type_enum),
-        (efi.MusicActivity, music_activity_type_enum),
+        (efi.DirectingActivity, get_mapping("DirectingActivityTypeEnum")),
+        (efi.CinematographyActivity, get_mapping("CinematographyActivityTypeEnum")),
+        (efi.EditingActivity, get_mapping("EditingActivityTypeEnum")),
+        (efi.WritingActivity, get_mapping("WritingActivityTypeEnum")),
+        (efi.ProductionDesignActivity, get_mapping("ProductionDesignActivityTypeEnum")),
+        (efi.ProducingActivity, get_mapping("ProducingActivityTypeEnum")),
+        (efi.MusicActivity, get_mapping("MusicActivityTypeEnum")),
     ]
 
     for activity, activity_type_enum in activity_to_type_mapping:
@@ -168,7 +159,7 @@ def _get_type_for_priref(priref, provider):
     if record_type is None:
         return efi.AgentTypeEnum.Person
 
-    agent_type = get_mapped_enum_value(agent_type_enum, record_type)
+    agent_type = get_mapped_enum_value("AgentTypeEnum", record_type)
 
     if agent_type is None:
         return efi.AgentTypeEnum.Person

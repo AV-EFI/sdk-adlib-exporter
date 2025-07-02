@@ -1,4 +1,4 @@
-from mappings.work_form_enum import work_form_enum
+from mappings.loader import get_mapping
 from records.base.base_record import XMLAccessor
 from records.base.utils import get_mapped_enum_value
 
@@ -12,11 +12,11 @@ def compute_has_form(xml: XMLAccessor):
     work_forms = []
 
     for category in nfa_categories:
-        work_form = get_mapped_enum_value(work_form_enum, category)
+        work_form = get_mapped_enum_value("WorkFormEnum", category)
 
         if work_form is None:
             continue
 
-        work_forms.append(work_form_enum[category])
+        work_forms.append(get_mapping("WorkFormEnum")[category])
 
     return work_forms

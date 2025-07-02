@@ -1,7 +1,5 @@
 from avefi_schema import model as efi
 
-from mappings.colour_type_enum import colour_type_enum
-from mappings.sound_type_enum import sound_type_enum
 from records.base.base_record import BaseRecord
 from records.base.helper.compute_described_by import compute_described_by
 from records.base.helper.compute_has_duration import compute_has_duration
@@ -40,11 +38,11 @@ class ManifestationRecord(BaseRecord):
             has_colour_type=simple_remap(
                 self.xml,
                 "colour_manifestation/value[@lang='3']/text()",
-                colour_type_enum,
+                "ColourTypeEnum",
             ),
             has_sound_type=simple_remap(
                 self.xml,
                 "sound_manifestation/value[@lang='3']/text()",
-                sound_type_enum,
+                "SoundTypeEnum",
             ),
         )
