@@ -4,7 +4,6 @@ import re
 from avefi_schema import model as efi
 
 from mappings.loader import get_mapping
-from records.base.base_record import XMLAccessor
 
 
 def get_formatted_date(date_start, date_start_prec, date_end, date_end_prec):
@@ -79,9 +78,3 @@ def get_mapped_enum_value(enum_name, key):
 
     return enum[key]
 
-
-def simple_remap(xml: XMLAccessor, xpath, enum_name):
-    value = xml.get_first(xpath)
-    if value is None:
-        return None
-    return get_mapped_enum_value(enum_name, value)

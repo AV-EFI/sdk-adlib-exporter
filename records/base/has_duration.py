@@ -1,10 +1,10 @@
 from avefi_schema import model as efi
 
-from records.base.base_record import XMLAccessor
-from records.base.utils import get_mapped_enum_value
+from records.record import XMLAccessor
+from records.utils import get_mapped_enum_value
 
 
-def compute_has_duration(xml: XMLAccessor):
+def has_duration(xml: XMLAccessor):
 
     value = xml.get_first(
         "Dimension[dimension.type/value[@lang='de-DE' and text()='Laufzeit']][1]/dimension.value/text()"

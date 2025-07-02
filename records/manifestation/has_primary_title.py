@@ -1,9 +1,9 @@
 from avefi_schema import model as efi
 
-from records.base.base_record import XMLAccessor
+from records.record import XMLAccessor
 
 
-def compute_has_primary_title(xml: XMLAccessor):
+def has_primary_title(xml: XMLAccessor):
     title = xml.get_first("Title/title/text()")
 
     title_article = xml.get_first("Title/title.article/text()")

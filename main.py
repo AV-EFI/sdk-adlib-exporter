@@ -6,9 +6,7 @@ from datetime import datetime
 from linkml_runtime.dumpers import JSONDumper
 
 from axiell_collections import collect_provider, pointer_file_provider
-from records.item.item_record import ItemRecord
-from records.manifestation.manifestation_record import ManifestationRecord
-from records.work.work_record import WorkRecord
+from records.record import Record
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -26,29 +24,25 @@ logger.addHandler(error_logs_handler)
 
 
 class RecordCategory:
-    def __init__(self, priref, builder, name):
+    def __init__(self, priref, record_type):
         xml = pointer_file_provider.get_by_priref(priref)
         self.prirefs = xml.xpath("hit/text()")
-        self.builder = builder
+        self.record_type = record_type
         self.records = []
-        self.name = name
 
 
 def main():
     works = RecordCategory(
         priref=3,
-        builder=WorkRecord,
-        name="work",
+        record_type="work",
     )
     manifestations = RecordCategory(
         priref=4,
-        builder=ManifestationRecord,
-        name="manifestation",
+        record_type="manifestation",
     )
     items = RecordCategory(
         priref=5,
-        builder=ItemRecord,
-        name="item",
+        record_type="item",
     )
 
     logging.info(
@@ -56,10 +50,10 @@ def main():
     )
 
     for i, record_category in enumerate([works, manifestations, items]):
-        logging.info(f"{i+1}. {len(record_category.prirefs)} ({record_category.name}s)")
+        logging.info(f"{i+1}. {len(record_category.prirefs)} ({record_category.record_type}s)")
 
     for i, record_category in enumerate([works, manifestations, items]):
-        logging.info(f"# Handling {record_category.name}s")
+        logging.info(f"# Handling {record_category.record_type}s")
         process_records(
             record_category=record_category,
         )
@@ -87,11 +81,11 @@ def main():
 def process_records(record_category):
     for i, priref in enumerate(record_category.prirefs):
         logging.info(
-            f"Handling {record_category.name} {i+1}/{len(record_category.prirefs)} with priref {priref}"
+            f"Handling {record_category.record_type} {i+1}/{len(record_category.prirefs)} with priref {priref}"
         )
         try:
             xml = collect_provider.get_by_priref(priref)
-            record = record_category.builder(xml, priref).build()
+            record = Record(record_category.record_type, xml).build()
             record_category.records.append(record)
         except Exception as e:
             logging.error(f"Error during mapping of {priref}: {e}", exc_info=True)

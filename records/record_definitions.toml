@@ -1,0 +1,64 @@
+[efi_classes]
+item = "Item"
+manifestation = "Manifestation"
+work = "WorkVariant"
+
+
+[work]
+complex = [
+    { attribute = "has_form", location = "work" },
+    { attribute = "has_genre", location = "work" },
+    { attribute = "has_subject", location = "work" },
+    { attribute = "is_part_of", location = "work" },
+    { attribute = "same_as", location = "work" },
+    { attribute = "has_event", location = "work" },
+    { attribute = "has_alternative_title", location = "work" },
+    { attribute = "has_primary_title", location = "work" },
+    { attribute = "has_identifier", location = "base" },
+    { attribute = "described_by", location = "base" },
+]
+
+[work.simple]
+type = { xpath = "work.description_type/value[@lang='3']/text()", enum = "WorkVariantTypeEnum" }
+
+
+
+[manifestation]
+complex = [
+    { attribute = "has_item", location = "manifestation" },
+    { attribute = "is_manifestation_of", location = "manifestation" },
+    { attribute = "has_duration", location = "base" },
+    { attribute = "has_extent", location = "base" },
+    { attribute = "has_note", location = "manifestation" },
+    { attribute = "has_event", location = "manifestation" },
+    { attribute = "has_identifier", location = "base" },
+    { attribute = "in_language", location = "base" },
+    { attribute = "has_primary_title", location = "manifestation" },
+    { attribute = "described_by", location = "base" },
+]
+
+[manifestation.simple]
+has_colour_type = { xpath = "colour_manifestation/value[@lang='3']/text()", enum = "ColourTypeEnum" }
+has_sound_type = { xpath = "sound_manifestation/value[@lang='3']/text()", enum = "SoundTypeEnum" }
+
+
+
+[item]
+complex = [
+    { attribute = "is_item_of", location = "item" },
+    { attribute = "has_duration", location = "base" },
+    { attribute = "has_extent", location = "base" },
+    { attribute = "has_format", location = "item" },
+    { attribute = "has_webresource", location = "item" },
+    { attribute = "has_identifier", location = "base" },
+    { attribute = "in_language", location = "base" },
+    { attribute = "has_primary_title", location = "item" },
+    { attribute = "described_by", location = "base" },
+]
+
+[item.simple]
+element_type = { xpath = "mat_characteristics/mat_characteristics.material_type_film/value[@lang='de-DE']/text()", enum = "ItemElementTypeEnum" }
+has_access_status = { xpath = "copy_status/value[@lang='3']/text()", enum = "ItemAccessStatusEnum" }
+has_frame_rate = { xpath = "Film_speed/frame_rate/value[@lang='de-DE']/text()", enum = "FrameRateEnum" }
+has_colour_type = { xpath = "colour_type/value[@lang='3']/text()", enum = "ColourTypeEnum" }
+has_sound_type = { xpath = "sound_item/value[@lang='de-DE']/text()", enum = "SoundTypeEnum" }

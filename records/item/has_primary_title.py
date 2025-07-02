@@ -1,9 +1,9 @@
 from avefi_schema import model as efi
 
-from records.base.base_record import XMLAccessor
+from records.record import XMLAccessor
 
 
-def compute_has_primary_title(xml: XMLAccessor):
+def has_primary_title(xml: XMLAccessor):
     part_of_title = xml.get_first(
         "Part_of/part_of_reference/Part_of/part_of.title/text()",
     )

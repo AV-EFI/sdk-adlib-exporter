@@ -1,10 +1,10 @@
 from avefi_schema import model as efi
 
-from records.base.base_record import XMLAccessor
-from records.base.utils import get_mapped_enum_value
+from records.record import XMLAccessor
+from records.utils import get_mapped_enum_value
 
 
-def compute_in_language(xml: XMLAccessor):
+def in_language(xml: XMLAccessor):
 
     xml_languages_list = xml.get_all("Language")
 

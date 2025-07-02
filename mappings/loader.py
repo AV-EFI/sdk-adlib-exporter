@@ -21,9 +21,9 @@ def _load_and_resolve_mappings():
         resolved_enum_mapping = {}
         for collections_name, efi_name in enum_mapping.items():
             try:
-                resolved_enum_mapping[collections_name] = efi_enum_class[efi_name]
-            except KeyError:
-                raise KeyError(f"Mapping value {efi_name} of enum {enum_name} does not exist in efi schema")
+                resolved_enum_mapping[collections_name] = getattr(efi_enum_class, efi_name)
+            except AttributeError:
+                raise AttributeError(f"Mapping value {efi_name} of enum {enum_name} does not exist in efi schema")
         resolved_enum_mappings[enum_name] = resolved_enum_mapping
 
     return resolved_enum_mappings

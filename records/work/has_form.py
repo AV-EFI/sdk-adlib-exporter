@@ -1,9 +1,9 @@
 from mappings.loader import get_mapping
-from records.base.base_record import XMLAccessor
-from records.base.utils import get_mapped_enum_value
+from records.record import XMLAccessor
+from records.utils import get_mapped_enum_value
 
 
-def compute_has_form(xml: XMLAccessor):
+def has_form(xml: XMLAccessor):
     nfa_categories = xml.get_all("nfa_category/value[@lang='3']/text()")
 
     if not nfa_categories:

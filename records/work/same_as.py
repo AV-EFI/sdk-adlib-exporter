@@ -1,9 +1,9 @@
 from avefi_schema import model as efi
 
-from records.base.base_record import XMLAccessor
+from records.record import XMLAccessor
 
 
-def compute_same_as(xml: XMLAccessor):
+def same_as(xml: XMLAccessor):
     # currently only generating "avefi:FilmportalResource"
     xml_alternative_numbers = xml.get_all("Alternative_number")
 

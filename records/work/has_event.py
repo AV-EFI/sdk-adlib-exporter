@@ -2,15 +2,15 @@ from avefi_schema import model as efi
 
 from axiell_collections import people_provider, thesau_provider
 from mappings.loader import get_mapping
-from records.base.base_record import XMLAccessor
-from records.base.utils import (
+from records.record import XMLAccessor
+from records.utils import (
     get_formatted_date,
     get_same_as_for_priref,
     get_mapped_enum_value,
 )
 
 
-def compute_has_event(xml: XMLAccessor):
+def has_event(xml: XMLAccessor):
     activities = []
 
     cast_members = []

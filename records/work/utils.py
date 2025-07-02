@@ -1,15 +1,7 @@
 from avefi_schema import model as efi
 
-from records.base.base_record import XMLAccessor
-from records.base.utils import get_mapped_enum_value
-
-
-def compute_has_alternative_title(xml: XMLAccessor):
-    return compute_title(xml)[1:]
-
-
-def compute_has_primary_title(xml: XMLAccessor):
-    return compute_title(xml)[0]
+from records.record import XMLAccessor
+from records.utils import get_mapped_enum_value
 
 
 def compute_title(xml: XMLAccessor):
