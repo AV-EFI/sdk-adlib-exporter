@@ -1,0 +1,224 @@
+# This file maps axiell collection values to avefi enum valueså
+
+# [<avefi_enum>]
+# <collections_value> = <avefi_enum_value>
+
+# collections_value => efi.avefi_enum.avefi_enum_value
+
+[AgentTypeEnum]
+"Institution" = "CorporateBody"
+"Person" = "Person"
+
+[CinematographyActivityTypeEnum]
+"Kameraassistenz" = "CameraAssistant"
+"Kameraoperateur/in" = "CameraOperator"
+"Kamera" = "Cinematographer"
+"Elektrik" = "Electrician"
+"Oberbeleuchter/in" = "GafferLighting"
+"Kamerabühne" = "Grip"
+"2. Kameraassistenz" = "LoaderClapper"
+"2nd Unit Kamera" = "SecondUnitDirectorofPhotography"
+"Steadicam-Operateur/in" = "SteadicamOperator"
+"Standfotos (Credit)" = "StillPhotographer"
+
+[ColourTypeEnum]
+"schwarz-weiß" = "BlackAndWhite"
+"Farbe" = "Colour"
+"Farbe und schwarz-weiß" = "ColourBlackAndWhite"
+
+[DirectingActivityTypeEnum]
+"Regieassistenz" = "AssistantDirector"
+"Casting" = "CastingDirector"
+"Continuity" = "Continuity"
+"Regie" = "Director"
+"2nd Unit Regie" = "SecondUnitDirector"
+"Stuntkoordination" = "StuntArranger"
+
+[EditingActivityTypeEnum]
+"Schnitt" = "FilmEditor"
+"Schnittassistenz" = "AssistantFilmEditor"
+
+[FormatDigitalFileTypeEnum]
+"AVI" = "AVI"
+"DPX" = "DPX"
+"MOV" = "MOV"
+"MXF" = "MXF"
+
+[FormatFilmTypeEnum]
+"16mm" = "16mmFilm"
+"17,5mm" = "17.5mmFilm"
+"35mm" = "35mmFilm"
+"70mm" = "70mmFilm"
+"8mm" = "8mmFilm"
+"9,5mm" = "9.5mmFilm"
+"S16mm" = "Super16mmFilm"
+"S8mm" = "Super8mmFilm"
+
+[FormatOpticalTypeEnum]
+"Blu-ray" = "BluRay"
+"CD" = "CD"
+"DVD" = "DVD"
+
+[FormatVideoTypeEnum]
+"Betacam SP" = "BetacamSP"
+"D1" = "D1"
+"DVCPRO" = "DVCPROHD"
+"DigiBeta" = "DigitalBetacam"
+"HDCam SR" = "HDCAMSR"
+
+[FrameRateEnum]
+"16" = "16fps"
+"23,98" = "23.98fps"
+"24" = "24fps"
+"25" = "25fps"
+"30" = "30fps"
+"48" = "48fps"
+
+[ItemAccessStatusEnum]
+"Archivkopie" = "Archive"
+"Verleihkopie" = "Distribution"
+"Master" = "Master"
+"Removed" = "Removed"
+"Viewing" = "Viewing"
+
+[ItemElementTypeEnum]
+"Dupnegativ" = "DuplicateNegative"
+"Duppositiv" = "DuplicatePositive"
+"Bildnegativ" = "ImageNegative"
+"Originalbildnegativ" = "OriginalNegative"
+"Umkehrpositiv" = "OriginalPositiveReversalFilm"
+"Positivkopie" = "Positive"
+"Tonnegativ" = "SoundNegative"
+
+[LanguageCodeEnum]
+"deutsch" = "deu"
+"japanisch" = "jpn"
+"englisch" = "eng"
+"rumänisch" = "rum"
+"französisch" = "fra"
+"tschechisch" = "cze"
+"italienisch" = "ita"
+"niederländisch" = "dut"
+"schwedisch" = "swe"
+"koreanisch" = "kor"
+"griechisch" = "grc"
+"russisch" = "rus"
+"spanisch" = "spa"
+"persisch" = "fas"
+"türkisch" = "tur"
+"portugiesisch" = "por"
+"norwegisch" = "nor"
+"hebräisch" = "heb"
+"romani" = "rom"
+"arabisch" = "ara"
+"ungarisch" = "hun"
+"chinesisch" = "chi"
+"litauisch" = "lit"
+"schweizerdeutsch" = "gsw"
+"bulgarisch" = "bul"
+"polnisch" = "pol"
+"indonesisch" = "ind"
+
+[LanguageUsageEnum]
+"Zwischentitel" = "Intertitles"
+"Synchronfassung" = "Dubbed"
+"Dialog" = "SpokenLanguage"
+"Untertitel" = "Subtitles"
+"Voice-over" = "VoiceOver"
+"Vorspann" = "OpeningCredits"
+"Untertitel für Hörgeschädigte" = "SDHSubtitles"
+"Credits" = "ClosingCredits"
+"Audiodeskription für Blinde" = "AudioDescription"
+"Ohne Dialog" = "NoDialogue"
+
+[MusicActivityTypeEnum]
+"Choreografie" = "Choreographer"
+"Musik (Credit)" = "Composer"
+"Arrangeur" = "MusicArranger"
+"Dirigent; Dirigentin" = "MusicConductor"
+"Gesang" = "SingingVoice"
+"Komponist; Komponistin" = "SongComposer"
+
+[PrecisionEnum]
+"circa" = "Approximate"
+
+[ProducingActivityTypeEnum]
+"Associate Producer" = "AssociateProducer"
+"Executive Producer" = "ExecutiveProducer"
+"Herstellungsleitung" = "LineProducer"
+"Location Scout" = "LocationManager"
+"Produktion (Credit)" = "Producer"
+"Produktionsassistenz" = "ProductionAssistant"
+"Produktionskoordination" = "ProductionCoordinator"
+"Aufnahmeleitung" = "ProductionManager"
+"Publizist; Publizistin" = "Publicist"
+
+[ProductionDesignActivityTypeEnum]
+"Ausstattung" = "ArtDirector"
+"Ausstattungsassistenz" = "AssistantArtDirector"
+"Kostümbild" = "CostumeDesigner"
+"Garderobier" = "Costumer"
+"Garderobe (Credit)" = "Gowns"
+"Maske (Credit)" = "MakeUpArtist"
+"Production Design" = "ProductionDesigner"
+"Requisite" = "PropertyMaster"
+"Kulissenmaler" = "ScenicArtist"
+"Innenrequisite" = "SetDecorator"
+"Set Design" = "SetDesigner"
+"Storyboard" = "StoryboardArtist"
+"Titeldesign" = "TitleDesigner"
+
+[PublicationEventTypeEnum]
+"Fernsehausstrahlung" = "BroadcastEvent"
+"Heimkino" = "HomeVideoPublicationEvent"
+"Nicht-Kino-Distribution" = "NonTheatricalDistributionEvent"
+"Nicht veröffentlicht" = "NotForReleaseEvent"
+"Internet" = "OnlineTransmissionEvent"
+"Pre-Release" = "PreReleaseEvent"
+"Kino-Distribution" = "TheatricalDistributionEvent"
+"Unbekannt" = "UnknownEvent"
+
+[SoundTypeEnum]
+"Mute" = "Mute"
+"Stumm" = "Silent"
+"Ton" = "Sound"
+
+[TitleTypeEnum]
+"Alternativtitel" = "AlternativeTitle"
+"Originaltitel" = "PreferredTitle"
+"Recherchehilfe" = "SearchTitle"
+"Archivtitel" = "SuppliedDevisedTitle"
+"Titelübersetzung" = "TranslatedTitle"
+"Arbeitstitel" = "WorkingTitle"
+
+[UnitEnum]
+"m" = "Metre"
+"ft" = "Feet"
+"GB" = "GigaByte"
+
+[WorkFormEnum]
+"Amateurfilm" = "AmateurFilm"
+"Kompilationsfilm" = "Compilation"
+"Home movie" = "HomeMovie"
+"Kurzfilm" = "Short"
+"Trailer" = "Trailer"
+"Episodenfilm" = "AnthologyFilm"
+"Werbefilm" = "Commercial"
+"Lehr-/Unterrichtsfilm" = "EducationalFilm"
+"Essayfilm" = "EssayFilm"
+"Experimentalfilm" = "ExperimentalFilm"
+"Industrie-/Wirtschaftsfilm" = "IndustrialFilm"
+"Musikvideo" = "MusicVideo"
+"Wochenschau" = "Newsreel"
+
+[WorkVariantTypeEnum]
+"Monographisch" = "Monographic"
+"Seriell" = "Serial"
+"Analytisch" = "Analytic"
+
+[WritingActivityTypeEnum]
+"Adaption" = "Adaptation"
+"Idee" = "Idea"
+"Buch (Literaturvorlage)" = "SourceMaterial"
+"Inszenierung" = "Stagedby"
+"Drehbuch" = "Writer"
